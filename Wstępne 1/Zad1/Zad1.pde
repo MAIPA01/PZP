@@ -40,6 +40,19 @@ void draw() {
   circle(400, 0, 60);
   
   // Chmury
+  fill(255);
+  circle(30, 20, 30);
+  circle(50, 20, 30);
+  circle(20, 30, 30);
+  circle(40, 30, 30);
+  circle(60, 30, 30);
+  
+  float offset = 150;
+  circle(30 + offset, 20, 30);
+  circle(50 + offset, 20, 30);
+  circle(20 + offset, 30, 30);
+  circle(40 + offset, 30, 30);
+  circle(60 + offset, 30, 30);
   
   // Osoba 1
   fill(255, 0, 0);
