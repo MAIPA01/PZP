@@ -96,28 +96,9 @@ void drawHexagons(float bL, float bR, float bU, float bD, int num) {
   }
 }
 
-// LOGO
-PFont nameFont;
-PFont surnameFont;
-
-void drawLogo(float x, float y, float size) {
-  textAlign(CENTER, CENTER);
-  textFont(surnameFont);
-  textSize(size);
-  fill(255, 0, 0);
-  text("Antosik", x - (20f * size) / 100f, y + (60f * size) / 100f);
-  textFont(nameFont);
-  textSize(size);
-  fill(255);
-  text("Patryk", x, y - (20f * size) / 100f);
-}
-
 void setup() {
   size(800, 600);
   colorIndex = (int)(random(bgColor.length));
-  
-  nameFont = createFont("./Shintia.otf", 50);
-  surnameFont = createFont("./SouthernAire.ttf", 50);
   
   noLoop();
 }
@@ -139,6 +120,4 @@ void draw() {
   
   //hexagons
   drawHexagons(width / 3f, (2f * width) / 3f, 0f, height, (int)random(1, 10));
-  
-  drawLogo(width / 2f, height / 2f, 100);
 }
