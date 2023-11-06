@@ -14,4 +14,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>processing</groupId>
+            <artifactId>Processing</artifactId>
+            <version>4.3</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/processing-core-4.3.jar</systemPath>
+        </dependency>
+    </dependencies>
+
 </project>
