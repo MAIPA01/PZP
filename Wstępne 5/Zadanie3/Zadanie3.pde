@@ -35,7 +35,7 @@ void setup() {
   img = loadImage("obraz.jpg"); 
   img.loadPixels();
   filterImg = createImage(img.width, img.height, RGB);
-  kernel = kernel10;
+  kernel = kernel2;
   int kymin = -(kernel.length - 1) / 2;
   int kymax = -kymin;
   int kxmin = -(kernel[0].length - 1) / 2;
