@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 15.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="svg"
+   x="0px"
+   y="0px"
+   width="500px"
+   height="500px"
+   viewBox="0 0 500 500"
+   enable-background="new 0 0 500 500"
+   xml:space="preserve"
+   sodipodi:docname="plik2.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs26" /><sodipodi:namedview
+   id="namedview24"
+   pagecolor="#ffffff"
+   bordercolor="#666666"
+   borderopacity="1.0"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.628"
+   inkscape:cx="149.87715"
+   inkscape:cy="250"
+   inkscape:window-width="1920"
+   inkscape:window-height="1017"
+   inkscape:window-x="-8"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg" />
+
+<g
+   id="niebo">
+	<rect
+   fill="#86D6F7"
+   width="500"
+   height="330"
+   id="rect5" />
+</g><g
+   id="slonce">
+	<ellipse
+   fill="#EAE722"
+   cx="373.5"
+   cy="117"
+   rx="55.861"
+   ry="56.568"
+   id="ellipse20" />
+</g><g
+   id="ksiezyc">
+	<path
+   fill="#F0E91D"
+   d="M412.396,87.792c0,0-5.187-18.58-33.538-24.595c-24.597-5.217-62.787,12.118-58.508,56.643   c3.729,38.755,37.267,51.798,54.779,52.17c27.593,0.587,42.854-20.496,44.345-25.712c1.491-5.217-11.067,15.197-38.01,8.943   c-20.868-4.844-30.578-16.324-33.911-34.656c-3.727-20.496,7.415-33.592,18.633-37.637C388.92,74.75,412.396,87.792,412.396,87.792   z"
+   id="path17" />
+</g>
+<g
+   id="trawa">
+	<rect
+   y="330"
+   fill="#58BA4D"
+   width="500"
+   height="170"
+   id="rect2" />
+</g><g
+   id="dom">
+	<rect
+   x="103"
+   y="258"
+   fill="#EFEFF0"
+   width="136"
+   height="111"
+   id="sciana" />
+	<rect
+   x="186.593"
+   y="304"
+   width="28"
+   height="65"
+   id="drzwi" />
+	<rect
+   x="124"
+   y="288"
+   fill="#4274B9"
+   width="30"
+   height="30"
+   id="okno" />
+	<polygon
+   fill="#BF1F40"
+   points="171,269 253.801,269 212.4,232 171,195 129.6,232 88.199,269  "
+   id="dach" />
+</g>
+
+
+</svg>
