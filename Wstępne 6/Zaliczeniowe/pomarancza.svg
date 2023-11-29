@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="17.821684mm"
+   height="22.079954mm"
+   viewBox="0 0 17.821684 22.079954"
+   version="1.1"
+   id="svg5232"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="pomarancza.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview5234"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.52724989"
+     inkscape:cx="-106.2115"
+     inkscape:cy="113.79803"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Cialo" />
+  <defs
+     id="defs5229" />
+  <g
+     inkscape:groupmode="layer"
+     id="Lodyga"
+     inkscape:label="Lodyga"
+     transform="translate(-90.950875,-138.50169)">
+    <rect
+       style="fill:#11d923;fill-opacity:1;stroke-width:0.0415773"
+       id="rect6186"
+       width="1.1039982"
+       height="7.1759887"
+       x="99.230865"
+       y="138.50169" />
+    <rect
+       style="fill:#11d923;fill-opacity:1;stroke-width:0.0415773"
+       id="rect6242"
+       width="3.6274226"
+       height="1.1039982"
+       x="99.861717"
+       y="140.23654" />
+  </g>
+  <g
+     inkscape:label="Cialo"
+     inkscape:groupmode="layer"
+     id="Cialo"
+     style="fill:#d99911;fill-opacity:1"
+     transform="translate(-90.950875,-138.50169)">
+    <circle
+       style="fill:#d99911;fill-opacity:1;stroke-width:0.0415773"
+       id="path5651"
+       cx="99.861717"
+       cy="151.67081"
+       r="8.9108419" />
+  </g>
+</svg>

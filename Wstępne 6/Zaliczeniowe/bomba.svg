@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="14.923696mm"
+   height="19.161287mm"
+   viewBox="0 0 14.923696 19.161287"
+   version="1.1"
+   id="svg6255"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="bomba.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview6257"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.74564394"
+     inkscape:cx="-4.023368"
+     inkscape:cy="143.50013"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6255" />
+  <defs
+     id="defs6252" />
+  <g
+     inkscape:groupmode="layer"
+     id="Lad"
+     inkscape:label="Lad"
+     transform="translate(-94.554281,-103.6129)">
+    <rect
+       style="fill:#8f5e00;fill-opacity:1;stroke-width:0.0457932"
+       id="rect7010"
+       width="1.1668733"
+       height="4.4218359"
+       x="101.18703"
+       y="104.65694" />
+    <rect
+       style="fill:#df0000;fill-opacity:1;stroke-width:0.0457932"
+       id="rect13200"
+       width="2.7636473"
+       height="2.088089"
+       x="100.38865"
+       y="103.6129" />
+  </g>
+  <g
+     inkscape:label="Cialo"
+     id="Cialo"
+     inkscape:groupmode="layer"
+     transform="translate(-94.554281,-103.6129)">
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke-width:0.0457932"
+       id="path6311"
+       cx="102.01613"
+       cy="115.31234"
+       r="7.4618478" />
+  </g>
+</svg>
