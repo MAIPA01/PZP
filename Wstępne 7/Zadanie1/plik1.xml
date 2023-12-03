@@ -1,0 +1,38 @@
+<wybory>
+	<wojewodztwa>
+		<wojewodztwo id="01">lodzkie</wojewodztwo>
+		<wojewodztwo id="02">podkarpackie</wojewodztwo>
+		<wojewodztwo id="03">mazowieckie</wojewodztwo>
+		<wojewodztwo id="04">warminsko-mazurskie</wojewodztwo>
+		<wojewodztwo id="05">dolnoslaskie</wojewodztwo>
+		<wojewodztwo id="06">slaskie</wojewodztwo>
+		<wojewodztwo id="07">kujawsko-pomorskie</wojewodztwo>
+		<wojewodztwo id="08">lubelskie</wojewodztwo>
+		<wojewodztwo id="09">lubuskie</wojewodztwo>
+		<wojewodztwo id="10">opolskie</wojewodztwo>
+		<wojewodztwo id="11">podlaskie</wojewodztwo>
+		<wojewodztwo id="12">pomorskie</wojewodztwo>
+		<wojewodztwo id="13">swietokrzyskie</wojewodztwo>
+		<wojewodztwo id="14">wielkopolskie</wojewodztwo>
+		<wojewodztwo id="15">zachodniopomorskie</wojewodztwo>
+		<wojewodztwo id="16">malopolskie</wojewodztwo>
+	</wojewodztwa>
+	<glosowanie id="1">
+		<frekwencja wojewodztwo="01" jednostka="%">56</frekwencja>
+		<frekwencja wojewodztwo="02" jednostka="%">22</frekwencja>
+		<frekwencja wojewodztwo="03" jednostka="%">67</frekwencja>
+		<frekwencja wojewodztwo="04" jednostka="%">50</frekwencja>
+		<frekwencja wojewodztwo="05" jednostka="%">50</frekwencja>
+		<frekwencja wojewodztwo="06" jednostka="%">24</frekwencja>
+		<frekwencja wojewodztwo="07" jednostka="%">15</frekwencja>
+		<frekwencja wojewodztwo="08" jednostka="%">43</frekwencja>
+		<frekwencja wojewodztwo="09" jednostka="%">62</frekwencja>
+		<frekwencja wojewodztwo="10" jednostka="%">78</frekwencja>
+		<frekwencja wojewodztwo="11" jednostka="%">38</frekwencja>
+		<frekwencja wojewodztwo="12" jednostka="%">58</frekwencja>
+		<frekwencja wojewodztwo="13" jednostka="%">83</frekwencja>
+		<frekwencja wojewodztwo="14" jednostka="%">43</frekwencja>
+		<frekwencja wojewodztwo="15" jednostka="%">12</frekwencja>
+		<frekwencja wojewodztwo="16" jednostka="%">87</frekwencja>
+	</glosowanie>
+</wybory>
