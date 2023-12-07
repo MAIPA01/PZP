@@ -1,0 +1,43 @@
+{
+	"palletNr" : 1,
+	"rectangles" : [
+	{
+		"width" : 10,
+		"height" : 20,
+		"posX" : 0,
+		"posY" : 500
+	}
+	],
+	"triangles" : [
+	{
+		"p1X" : 0,
+		"p1Y" : 0,
+		"p2X" : 0,
+		"p2Y" : 100,
+		"p3X" : 200,
+		"p3Y" : 100
+	}
+	],
+	"ellipses" : [
+	{
+		"posX" : 100,
+		"posY" : 200,
+		"rX" : 10,
+		"rY" : 2
+	}
+	],
+	"circles" : [
+	{
+		"posX" : 200,
+		"posY" : 100,
+		"r" : 20
+	}
+	],
+	"hexagons" : [
+	{
+		"posX" : 20,
+		"posY" : 50,
+		"r" : 30
+	}
+	]
+}
