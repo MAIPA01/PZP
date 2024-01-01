@@ -204,8 +204,12 @@ public class SudokuBoard {
      
      float buttonPosX = startX + x * cellSizeX + cellSizeX / 2f;
      float buttonPosY = startY + y * cellSizeY + cellSizeY / 2f;
-     cellButtons.add(new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY, color(128)));
-     cellButtons.get(i).addAction(() -> { _cells[x][y] = this.choosed; });
+     Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
+     button.setColor(color(128));
+     button.addAction(() -> {
+       _cells[x][y] = this.choosed;
+     });
+     cellButtons.add(button);
    }
  }
  
@@ -219,7 +223,41 @@ public class SudokuBoard {
    }
  }
  
- void checkBoard() {
+ public boolean checkBoard() {
    
+   // check rows and columns
+   for (int i = 0; i < 9; i++) {
+     ArrayList<Integer> inColumn = new ArrayList<Integer>();
+     ArrayList<Integer> inRow = new ArrayList<Integer>();
+     for (int j = 0; j < 9; j++) {
+       // check row
+       if (_cells[j][i] == 0) return false;
+       if (inRow.contains(_cells[j][i])) return false;
+       inRow.add(_cells[j][i]);
+       
+       // check column
+       if (_cells[i][j] == 0) return false;
+       if (inColumn.contains(_cells[i][j])) return false;
+       inColumn.add(_cells[i][j]);
+     }
+   }
+   
+   // check boxes
+   for (int bx = 0; bx < 3; bx++) {
+     int startX = bx * 3;
+     for (int by = 0; by < 3; by++) {
+         int startY = by * 3;
+         ArrayList<Integer> inBox = new ArrayList<Integer>();
+         for (int x = startX; x < startX + 3; x++) {
+            for (int y = startY; y < startY + 3; y++) {
+               if (_cells[x][y] == 0) return false;
+               if (inBox.contains(_cells[x][y])) return false;
+               inBox.add(_cells[x][y]);
+            }
+         }
+     }
+   }
+   
+   return true;
  }
 }
