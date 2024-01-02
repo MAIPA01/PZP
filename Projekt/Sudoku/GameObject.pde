@@ -26,7 +26,19 @@ public class GameObject {
     return _pos;
   }
   
-  public void display() {
+  public void display(PGraphics drawLayer) {
+    
+  }
+  
+  public void mousePressed() {
+    
+  }
+  
+  public void mouseReleased() {
+    
+  }
+  
+  public void mouseDragged() {
     
   }
 }

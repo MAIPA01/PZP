@@ -36,25 +36,25 @@ public class Button extends GameObject {
   _actions.add(a); 
  }
  
- public void display() {
-    pushMatrix();
-    pushStyle();
+ public void display(PGraphics drawLayer) {
+    drawLayer.pushMatrix();
+    drawLayer.pushStyle();
     
-    rectMode(CENTER);
+    drawLayer.rectMode(CENTER);
     if (_hasStroke) {
-     strokeWeight(_strokeWeight);
-     stroke(_strokeColor);
+     drawLayer.strokeWeight(_strokeWeight);
+     drawLayer.stroke(_strokeColor);
     }
     else {
-     noStroke(); 
+     drawLayer.noStroke(); 
     }
-    fill(_color);
+    drawLayer.fill(_color);
     PVector pos = getPosition();
-    translate(pos.x, pos.y);
-    rect(0, 0, _w, _h);
+    drawLayer.translate(pos.x, pos.y);
+    drawLayer.rect(0, 0, _w, _h);
 
-    popStyle();
-    popMatrix();
+    drawLayer.popStyle();
+    drawLayer.popMatrix();
  }
  
  public boolean isInside(float x, float y) {
@@ -84,5 +84,13 @@ public class Button extends GameObject {
  
  public void setColor(color Color) {
    _color = Color;
+ }
+ 
+ public float getHeight() {
+   return _h; 
+ }
+ 
+ public float getWidth() {
+  return _w; 
  }
 }

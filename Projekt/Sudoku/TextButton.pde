@@ -8,19 +8,19 @@ public class TextButton extends Button {
    _textColor = color(0);
   }
   
-  public void display() {
-    super.display();
+  public void display(PGraphics drawLayer) {
+    super.display(drawLayer);
     
-    pushMatrix();
-    pushStyle();
+    drawLayer.pushMatrix();
+    drawLayer.pushStyle();
     
-    fill(_textColor);
-    float textHeight = (textAscent() + textDescent()) * 0.75f;
+    drawLayer.fill(_textColor);
+    float textHeight = (drawLayer.textAscent() + drawLayer.textDescent()) * 0.75f;
     PVector pos = getPosition();
-    text(_text, pos.x - textWidth(_text) / 2f, pos.y + textHeight / 2f);
+    drawLayer.text(_text, pos.x - drawLayer.textWidth(_text) / 2f, pos.y + textHeight / 2f);
     
-    popStyle();
-    popMatrix();
+    drawLayer.popStyle();
+    drawLayer.popMatrix();
   }
   
   public void setText(String text) {

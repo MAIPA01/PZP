@@ -1,9 +1,15 @@
 TextButton[] numberButtons = new TextButton[9];
 SudokuBoard board;
-ScrollView view;
+
+Dropdown select;
+
+PGraphics screen;
 
 void setup() {
  size(400, 400);
+ 
+ screen = createGraphics(width, height);
+ 
  board = new SudokuBoard();
  board.generateLevel(SUDOKU_LEVEL.HARD);
  
@@ -32,6 +38,16 @@ void setup() {
    });
  }
  
+ select = new Dropdown(width / 2f, height / 2f, 200, 25, 100);
+ select.addOption("a");
+ select.addOption("b");
+ select.addOption("c");
+ select.addOption("d");
+ 
+ /*testObject1 = new Button(width / 2f, height / 2f, 100, 100);
+ testObject1.addAction(() -> { println("test"); });
+ testObject2 = new Button(width / 2f, height / 2f + 200, 100, 100);
+ 
  view = new ScrollView(200, 200, 0, 400);
  view.setBgColor(color(164));
  view.setScrollColor(color(255));
@@ -39,16 +55,23 @@ void setup() {
  view.setScrollWidth(20);
  view.enableScroll(true);
  view.setPosition(width / 2f, height / 2f);
+ 
+ view.addObject(testObject1);
+ view.addObject(testObject2);*/
 }
 
 void draw() {
-  background(128);
-  /*board.display();
+  screen.beginDraw();
+  screen.background(128);
+  /*board.display(screen);
   for (int i = 0; i < 9; i++) {
-   numberButtons[i].display(); 
+   numberButtons[i].display(screen); 
   }*/
+  //view.display(screen);
+  select.display(screen);
+  screen.endDraw();
   
-  view.display();
+  image(screen, 0, 0);
 }
 
 void mousePressed() {
@@ -56,5 +79,16 @@ void mousePressed() {
   for (int i = 0; i < 9; i++) {
    numberButtons[i].mousePressed();
   }*/
-  view.mousePressed();
+  //view.mousePressed();
+  select.mousePressed();
+}
+
+void mouseReleased() {
+  //view.mouseReleased();
+  select.mouseReleased();
+}
+
+void mouseDragged() {
+  //view.mouseDragged();
+  select.mouseDragged();
 }

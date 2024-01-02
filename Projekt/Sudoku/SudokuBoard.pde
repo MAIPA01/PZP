@@ -34,42 +34,42 @@ public class SudokuBoard {
     }
  }
  
- public void display() {
-   pushMatrix();
-   pushStyle();
+ public void display(PGraphics drawLayer) {
+   drawLayer.pushMatrix();
+   drawLayer.pushStyle();
    
    float startX = width / 2f - (9 * cellSizeX) / 2f;
    float startY = height / 2f - (9 * cellSizeY) / 2f;
    
    // draw Buttons
    for (int i = 0; i < cellButtons.size(); i++) {
-    cellButtons.get(i).display(); 
+    cellButtons.get(i).display(drawLayer); 
    }
    
    // draw Lines
    for (int i = 0; i <= 9; i++) {
-     if (i % 3 == 0) strokeWeight(4);
-     else strokeWeight(2);
-     line(startX + i * cellSizeX, startY, startX + i * cellSizeX, startY + 9 * cellSizeY);
-     line(startX, startY + i * cellSizeY, startX + 9 * cellSizeX, startY + i * cellSizeY);
+     if (i % 3 == 0) drawLayer.strokeWeight(4);
+     else drawLayer.strokeWeight(2);
+     drawLayer.line(startX + i * cellSizeX, startY, startX + i * cellSizeX, startY + 9 * cellSizeY);
+     drawLayer.line(startX, startY + i * cellSizeY, startX + 9 * cellSizeX, startY + i * cellSizeY);
    }
    
    // draw Numbers
-   textSize(24);
-   float textHeight = (textAscent() + textDescent()) * 0.75f;
+   drawLayer.textSize(24);
+   float textHeight = (drawLayer.textAscent() + drawLayer.textDescent()) * 0.75f;
    for (int x = 0; x < 9; x++) {
     for (int y = 0; y < 9; y++) {
       if (_cells[x][y] != 0) {
-        if (_cells[x][y] == choosed) fill(255, 0, 0);
-        else fill(255);
+        if (_cells[x][y] == choosed) drawLayer.fill(255, 0, 0);
+        else drawLayer.fill(255);
         String text = "" + _cells[x][y];
-        text(text, startX + x * cellSizeX + cellSizeX / 2f - textWidth(text) / 2f, startY + y * cellSizeY + cellSizeY / 2f + textHeight / 2f);
+        drawLayer.text(text, startX + x * cellSizeX + cellSizeX / 2f - drawLayer.textWidth(text) / 2f, startY + y * cellSizeY + cellSizeY / 2f + textHeight / 2f);
       }
     }
    }
    
-   popMatrix();
-   popStyle();
+   drawLayer.popStyle();
+   drawLayer.popMatrix();
  }
  
  void clearBoard() {
