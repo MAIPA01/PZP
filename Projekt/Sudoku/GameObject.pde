@@ -1,5 +1,6 @@
 public class GameObject {
   private PVector _pos;
+  private boolean _enabled;
   
   public GameObject() {
    this(0, 0); 
@@ -24,6 +25,14 @@ public class GameObject {
   
   public PVector getPosition() {
     return _pos;
+  }
+  
+  public boolean isEnabled() {
+     return _enabled; 
+  }
+  
+  public void enable(boolean enable) {
+     _enabled = enable;
   }
   
   public void display(PGraphics drawLayer) {

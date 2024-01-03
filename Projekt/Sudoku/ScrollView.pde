@@ -138,7 +138,9 @@ public class ScrollView extends GameObject {
    _viewMask.pushMatrix();
    _viewMask.translate(-(viewPos.x - _viewMask.width / 2f), -(viewPos.y - _viewMask.height / 2f));
    for (int i = 0; i < _objects.size(); i++) {
-      _objects.get(i).display(_viewMask);
+     if (_objects.get(i).isEnabled()) {
+        _objects.get(i).display(_viewMask);
+     }
    }
    _viewMask.popMatrix();
    
@@ -209,27 +211,24 @@ public class ScrollView extends GameObject {
        }
        
        float desiredScrollY = _currScrollY + deltaScroll;
-       print("oldDelta: " + deltaScroll + " scrollY: " + desiredScrollY);
          
        if (desiredScrollY > _maxY) { 
          desiredScrollY = _maxY;
-         deltaScroll = desiredScrollY - _currScrollY;
-         
-         // coś nie działa ze scrollem TODO
        }
        if (desiredScrollY < _minY) {
          desiredScrollY = _minY;
-         deltaScroll = desiredScrollY - _currScrollY;
        }
-       print(" -> " + desiredScrollY + " currScroll: " + _currScrollY);
+       deltaScroll = desiredScrollY - _currScrollY;
+       
+       float oldViewPos = map(_currScrollY, 0, _maxY, _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
+       float newViewPos = map(desiredScrollY, 0, _maxY, _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
+       float deltaPos = newViewPos - oldViewPos;
        
        _currScrollY = desiredScrollY;
        
-       println(" new delta: " + deltaScroll);
-       
        for (int i = 0; i < _objects.size(); i++) {
           PVector oldPos = _objects.get(i).getPosition();
-          _objects.get(i).setPosition(oldPos.x, oldPos.y - deltaScroll);
+          _objects.get(i).setPosition(oldPos.x, oldPos.y - deltaPos);
        }
      }
   }

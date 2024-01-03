@@ -27,6 +27,7 @@ public class Dropdown extends GameObject {
    
     _btn.display(drawLayer);
     if (_svIsVisible) _sv.display(drawLayer);
+    // polepszyć rysowanie opcji
     
     drawLayer.popStyle();
     drawLayer.popMatrix();
@@ -54,7 +55,7 @@ public class Dropdown extends GameObject {
      _options.put(name, opt);
      
      if ((_btn.getHeight() + 5) * (_options.size() + 2) > _sv.getScrollHeight()) {
-       _sv.setMaxY((_btn.getHeight() + 5) * (_options.size() + 2)); 
+       _sv.setMaxY((_btn.getHeight() + 5) * (_options.size()) + 5); 
      }
      
      if (_sv.getScrollHeight() < _sv.getViewHeight()) {
@@ -65,5 +66,9 @@ public class Dropdown extends GameObject {
  
  public int getCurrentOption() {
   return _currentOpt;
+ }
+ 
+ public boolean areOptionsVisible() {
+    return _svIsVisible; 
  }
 }
