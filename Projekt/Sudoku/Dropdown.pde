@@ -35,15 +35,15 @@ public class Dropdown extends GameObject {
  
  public void mousePressed() {
    _btn.mousePressed();
-   _sv.mousePressed();
+   if (_svIsVisible) _sv.mousePressed();
  }
  
  public void mouseReleased() {
-   _sv.mouseReleased();
+   if (_svIsVisible) _sv.mouseReleased();
  }
  
  public void mouseDragged() {
-   _sv.mouseDragged();
+   if (_svIsVisible) _sv.mouseDragged();
  }
  
  public void addOption(String name) {
@@ -63,9 +63,10 @@ public class Dropdown extends GameObject {
      
      // Option Button
      TextButton opt = new TextButton(name, pos.x + dotRadius - 2.5f, pos.y + (_btn.getHeight() + 5) * (_options.size() + 1), _btn.getWidth() - 5f - 2f * dotRadius, _btn.getHeight());
+     final int optNum = _options.size();
      opt.addAction(() -> {
        // Option
-       _currentOpt = _options.size();
+       _currentOpt = optNum;
        
        // Dropdown Button
        _btn.setText(name);
@@ -107,7 +108,7 @@ public class Dropdown extends GameObject {
  
  public void setCurrentOption(int optIndex) {
    if (optIndex < 0 || optIndex > _options.size()) return;
-   ((TextButton)_options.values().toArray()[_currentOpt]).Invoke();
+   ((TextButton)_options.values().toArray()[optIndex]).Invoke();
  }
  
  public int getCurrentOption() {

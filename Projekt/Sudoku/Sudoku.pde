@@ -1,7 +1,3 @@
-
-TextButton[] numberButtons = new TextButton[9];
-SudokuBoard board;
-
 Dropdown select;
 
 PGraphics screen;
@@ -15,29 +11,69 @@ SCREEN_TYPES currentScreen = SCREEN_TYPES.MENU;
 
 // MENU
 int highscoreSeconds[] = { 0, 0, 0 };
-int currentLevelOpt = 0;
+int highscoreMinutes[] = { 0, 0, 0 };
 Dropdown levelDropdown;
 TextButton startButton;
 TextButton loadButton;
 TextButton exitButton;
 
 // GAME
-
+TextButton[] numberButtons = new TextButton[9];
+TextButton saveButton;
+TextButton backToMenuButton;
+SudokuBoard board;
+int currentMiliseconds = 0;
+int currentSeconds = 0;
+int currentMinutes = 0;
 
 // END
+TextButton returnToMenuButton;
 
 void setup() {
  size(400, 400);
  
  screen = createGraphics(width, height);
  
+ // MENU
+ levelDropdown = new Dropdown(width / 2f, height / 2f - 70f, 200, 25, 100);
+ levelDropdown.addOption("EASY");
+ levelDropdown.addOption("MEDIUM");
+ levelDropdown.addOption("HARD");
+ levelDropdown.setCurrentOption(0);
+ 
+ startButton = new TextButton("START", width / 2f, height / 2f - 40f, 200, 25);
+ startButton.addAction(() -> {
+   if (levelDropdown.getCurrentOption() == 0)
+     board.generateLevel(SUDOKU_LEVEL.EASY);
+   else if (levelDropdown.getCurrentOption() == 1)
+     board.generateLevel(SUDOKU_LEVEL.MEDIUM);
+   else if (levelDropdown.getCurrentOption() == 2)
+     board.generateLevel(SUDOKU_LEVEL.HARD);
+     
+   currentMiliseconds = 0;
+   currentSeconds = 0;
+   currentMinutes = 0;
+   
+   currentScreen = SCREEN_TYPES.GAME;
+ });
+ 
+ loadButton = new TextButton("LOAD", width / 2f, height / 2f - 10f, 200, 25);
+ loadButton.addAction(() -> {
+   // load sudoku board
+   println("NA RAZIE NIE DZIAŁA");
+ });
+ 
+ exitButton = new TextButton("EXIT", width / 2f, height / 2f + 20f, 200, 25);
+ exitButton.addAction(() -> {
+  exit(); 
+ });
+ 
+ // GAME
  board = new SudokuBoard();
- board.generateLevel(SUDOKU_LEVEL.HARD);
  
  float buttonSize = 400 / (9 + 5);
- 
  for (int i = 0; i < 9; i++) {
-   numberButtons[i] = new TextButton("" + (i + 1), buttonSize + i * (buttonSize + buttonSize / 2f), height - buttonSize - buttonSize / 2f, buttonSize, buttonSize);
+   numberButtons[i] = new TextButton("" + (i + 1), buttonSize + i * (buttonSize + buttonSize / 2f), height - buttonSize - buttonSize / 2f + 10f, buttonSize, buttonSize);
    numberButtons[i].setStrokeWeight(2);
    numberButtons[i].setStrokeColor(color(0));
    
@@ -59,28 +95,22 @@ void setup() {
    });
  }
  
- select = new Dropdown(width / 2f, height / 2f, 200, 25, 100);
- select.addOption("a");
- select.addOption("b");
- select.addOption("c");
- select.addOption("d");
- select.addOption("o");
- select.addOption("x");
+ saveButton = new TextButton("SAVE", width - 55, 25, 100, 25);
+ saveButton.addAction(() -> {
+   // save sudoku board
+   println("NA RAZIE NIE DZIAŁA");
+ });
  
- /*testObject1 = new Button(width / 2f, height / 2f, 100, 100);
- testObject1.addAction(() -> { println("test"); });
- testObject2 = new Button(width / 2f, height / 2f + 200, 100, 100);
+ backToMenuButton = new TextButton("BACK", 55, 25, 100, 25);
+ backToMenuButton.addAction(() -> {
+   currentScreen = SCREEN_TYPES.MENU;
+ });
  
- view = new ScrollView(200, 200, 0, 400);
- view.setBgColor(color(164));
- view.setScrollColor(color(255));
- view.setScrollBgColor(color(200));
- view.setScrollWidth(20);
- view.enableScroll(true);
- view.setPosition(width / 2f, height / 2f);
- 
- view.addObject(testObject1);
- view.addObject(testObject2);*/
+ // END
+ returnToMenuButton = new TextButton("RETURN TO MENU", width / 2f, height / 2f + 55, 200, 25);
+ returnToMenuButton.addAction(() -> {
+   currentScreen = SCREEN_TYPES.MENU;
+ });
 }
 
 void draw() {
@@ -88,27 +118,47 @@ void draw() {
   screen.background(128);
   
   if (currentScreen == SCREEN_TYPES.MENU) {
-    int minutes = highscoreSeconds[currentLevelOpt] / 60;
-    int seconds = highscoreSeconds[currentLevelOpt] % 60;
+    int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
+    int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
     String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
     
     screen.textSize(20);
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
     screen.text("Highscore: " + time, screen.width / 2f - screen.textWidth("Highscore: " + time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
+    
+    startButton.display(screen);
+    loadButton.display(screen);
+    exitButton.display(screen);
+    levelDropdown.display(screen);
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
+    currentMiliseconds += 1000f / frameRate;
+    if (currentMiliseconds > 1000) {
+      currentSeconds += currentMiliseconds / 1000;
+      currentMiliseconds = currentMiliseconds % 1000;
+    }
+    if (currentSeconds > 60) {
+      currentMinutes += currentSeconds / 60;
+      currentSeconds = currentSeconds % 60;
+    }
     
+    board.display(screen);
+    for (int i = 0; i < 9; i++) {
+     numberButtons[i].display(screen); 
+    }
+    saveButton.display(screen);
+    backToMenuButton.display(screen);
+    
+    screen.textSize(20);
+    float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
+    int minutes = currentMinutes;
+    int seconds = currentSeconds;
+    String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 25 + textHeight / 2f);
   }
   else if (currentScreen == SCREEN_TYPES.END) {
-    
+    returnToMenuButton.display(screen);
   }
-  
-  /*board.display(screen);
-  for (int i = 0; i < 9; i++) {
-   numberButtons[i].display(screen); 
-  }*/
-  //view.display(screen);
-  //select.display(screen);
   
   screen.endDraw();
   image(screen, 0, 0);
@@ -116,26 +166,45 @@ void draw() {
 
 void mousePressed() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    
+    levelDropdown.mousePressed();
+    if (!levelDropdown.areOptionsVisible()) {
+      startButton.mousePressed();
+      loadButton.mousePressed();
+      exitButton.mousePressed();
+    }
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
+    board.mousePressed();
+    for (int i = 0; i < 9; i++) {
+     numberButtons[i].mousePressed();
+    }
+    saveButton.mousePressed();
+    backToMenuButton.mousePressed();
     
+    if (board.checkBoard()) {
+       if (highscoreMinutes[levelDropdown.getCurrentOption()] < currentMinutes) {
+          highscoreMinutes[levelDropdown.getCurrentOption()] = currentMinutes;
+          highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
+          
+          // save highscores
+       }
+       else if (highscoreMinutes[levelDropdown.getCurrentOption()] == currentMinutes && highscoreSeconds[levelDropdown.getCurrentOption()] < currentSeconds) {
+          highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
+          
+          // save highscores
+       }
+       
+       currentScreen = SCREEN_TYPES.END;
+    }
   }
   else if (currentScreen == SCREEN_TYPES.END) {
-    
+    returnToMenuButton.mousePressed();
   }
-  
-  /*board.mousePressed();
-  for (int i = 0; i < 9; i++) {
-   numberButtons[i].mousePressed();
-  }*/
-  //view.mousePressed();
-  //select.mousePressed();
 }
 
 void mouseReleased() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    
+    levelDropdown.mouseReleased();
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
     
@@ -143,14 +212,11 @@ void mouseReleased() {
   else if (currentScreen == SCREEN_TYPES.END) {
     
   }
-  
-  //view.mouseReleased();
-  //select.mouseReleased();
 }
 
 void mouseDragged() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    
+    levelDropdown.mouseDragged();
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
     
@@ -158,7 +224,4 @@ void mouseDragged() {
   else if (currentScreen == SCREEN_TYPES.END) {
     
   }
-  
-  //view.mouseDragged();
-  //select.mouseDragged();
 }

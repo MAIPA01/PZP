@@ -72,7 +72,7 @@ public class SudokuBoard {
    drawLayer.popMatrix();
  }
  
- void clearBoard() {
+ private void clearBoard() {
    cellButtons.clear();
    for (int x = 0; x < 9; x++) {
     for (int y = 0; y < 9; y++) {
@@ -81,7 +81,7 @@ public class SudokuBoard {
    }
  }
  
- void generateBoard() {
+ private void generateBoard() {
    clearBoard();
    
     Random rnd = new Random();
@@ -145,7 +145,7 @@ public class SudokuBoard {
    }
  }
  
- ArrayList<Integer> possibleInputs(int x, int y) {
+ private ArrayList<Integer> possibleInputs(int x, int y) {
    if (_cells[x][y] != 0) {
     return new ArrayList<Integer>(); 
    }
@@ -186,6 +186,10 @@ public class SudokuBoard {
  public void generateLevel(SUDOKU_LEVEL level) {
    generateBoard();
    
+   while (!checkBoard()) {
+     generateBoard(); 
+   }
+   
    Random rnd = new Random(); //<>//
    
    ArrayList<Integer> possibleIndexes = new ArrayList<Integer>();
@@ -205,7 +209,7 @@ public class SudokuBoard {
      float buttonPosX = startX + x * cellSizeX + cellSizeX / 2f;
      float buttonPosY = startY + y * cellSizeY + cellSizeY / 2f;
      Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
-     button.setColor(color(128));
+     button.setColor(color(30));
      button.addAction(() -> {
        _cells[x][y] = this.choosed;
      });
