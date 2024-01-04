@@ -12,6 +12,7 @@ public class GameObject {
   
   public GameObject(PVector pos) {
    _pos = new PVector(pos.x, pos.y);
+   _enabled = true;
   }
   
   public void setPosition(float x, float y) {

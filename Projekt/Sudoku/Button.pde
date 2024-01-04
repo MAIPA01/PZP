@@ -36,6 +36,12 @@ public class Button extends GameObject {
   _actions.add(a); 
  }
  
+ public void Invoke() {
+   for (ButtonAction a : _actions) {
+     a.Invoke();
+   }
+ }
+ 
  public void display(PGraphics drawLayer) {
     drawLayer.pushMatrix();
     drawLayer.pushStyle();
@@ -92,5 +98,13 @@ public class Button extends GameObject {
  
  public float getWidth() {
   return _w; 
+ }
+ 
+ public void setWidth(float w) {
+   _w = w;
+ }
+ 
+ public void setHeight(float h) {
+   _h = h;
  }
 }
