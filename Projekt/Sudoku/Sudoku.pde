@@ -34,6 +34,15 @@ void setup() {
  
  screen = createGraphics(width, height);
  
+ // LOAD HIGHSCORES
+ File f = dataFile("highscores.json");
+ if (f.exists() && f.isFile()) {
+   loadHighscoresFromJson();
+ }
+ else {
+   saveHighscoresToJson();
+ }
+ 
  // MENU
  levelDropdown = new Dropdown(width / 2f, height / 2f - 70f, 200, 25, 100);
  levelDropdown.addOption("EASY");
@@ -49,7 +58,9 @@ void setup() {
      board.generateLevel(SUDOKU_LEVEL.MEDIUM);
    else if (levelDropdown.getCurrentOption() == 2)
      board.generateLevel(SUDOKU_LEVEL.HARD);
-     
+   
+   board.setChoosed(0);
+   
    currentMiliseconds = 0;
    currentSeconds = 0;
    currentMinutes = 0;
@@ -60,7 +71,9 @@ void setup() {
  loadButton = new TextButton("LOAD", width / 2f, height / 2f - 10f, 200, 25);
  loadButton.addAction(() -> {
    // load sudoku board
-   println("NA RAZIE NIE DZIAŁA");
+   loadSudokuBoardFromJson();
+   println("Loaded");
+   currentScreen = SCREEN_TYPES.GAME;
  });
  
  exitButton = new TextButton("EXIT", width / 2f, height / 2f + 20f, 200, 25);
@@ -98,7 +111,8 @@ void setup() {
  saveButton = new TextButton("SAVE", width - 55, 25, 100, 25);
  saveButton.addAction(() -> {
    // save sudoku board
-   println("NA RAZIE NIE DZIAŁA");
+   saveSudokuBoardToJson();
+   println("Saved");
  });
  
  backToMenuButton = new TextButton("BACK", 55, 25, 100, 25);
@@ -187,11 +201,13 @@ void mousePressed() {
           highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
           
           // save highscores
+          saveHighscoresToJson();
        }
        else if (highscoreMinutes[levelDropdown.getCurrentOption()] == currentMinutes && highscoreSeconds[levelDropdown.getCurrentOption()] < currentSeconds) {
           highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
           
           // save highscores
+          saveHighscoresToJson();
        }
        
        currentScreen = SCREEN_TYPES.END;
@@ -224,4 +240,60 @@ void mouseDragged() {
   else if (currentScreen == SCREEN_TYPES.END) {
     
   }
+}
+
+void saveHighscoresToJson() {
+  JSONObject highscoreJson = new JSONObject();
+  
+  JSONArray levelsArray = new JSONArray();
+  for (int i = 0; i < highscoreSeconds.length; i++) {
+    JSONObject levelJsonObject = new JSONObject();
+    levelJsonObject.setInt("Minutes", highscoreMinutes[i]);
+    levelJsonObject.setInt("Seconds", highscoreSeconds[i]);
+    
+    levelsArray.append(levelJsonObject);
+  }
+  
+  highscoreJson.setJSONArray("Highscores", levelsArray);
+  
+  saveJSONObject(highscoreJson, "./data/highscores.json");
+}
+
+void loadHighscoresFromJson() {
+  JSONObject highscoreJson = loadJSONObject("./data/highscores.json");
+  
+  JSONArray levelsArray = highscoreJson.getJSONArray("Highscores");
+  for (int i = 0; i < levelsArray.size(); i++) {
+    highscoreMinutes[i] = levelsArray.getJSONObject(i).getInt("Minutes"); 
+    highscoreSeconds[i] = levelsArray.getJSONObject(i).getInt("Seconds");
+  }
+}
+
+void saveSudokuBoardToJson() {
+ JSONObject sudokuJson = new JSONObject();
+ sudokuJson.setInt("Difficulty", levelDropdown.getCurrentOption());
+ 
+ JSONObject currentTime = new JSONObject();
+ currentTime.setInt("Miliseconds", currentMiliseconds);
+ currentTime.setInt("Seconds", currentSeconds);
+ currentTime.setInt("Minutes", currentMinutes);
+ 
+ sudokuJson.setJSONObject("Time", currentTime);
+ 
+ sudokuJson.setJSONObject("Board", board.getJSONObject());
+ 
+ saveJSONObject(sudokuJson, "./data/sudoku.json");
+}
+
+void loadSudokuBoardFromJson() {
+  JSONObject sudokuJson = loadJSONObject("./data/sudoku.json");
+  
+  levelDropdown.setCurrentOption(sudokuJson.getInt("Difficulty"));
+  
+  JSONObject currentTime = sudokuJson.getJSONObject("Time");
+  currentMiliseconds = currentTime.getInt("Miliseconds");
+  currentSeconds = currentTime.getInt("Seconds");
+  currentMinutes = currentTime.getInt("Minutes");
+  
+  board.loadJSONObject(sudokuJson.getJSONObject("Board"));
 }

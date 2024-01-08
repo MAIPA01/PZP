@@ -264,4 +264,62 @@ public class SudokuBoard {
    
    return true;
  }
+ 
+ public JSONObject getJSONObject() {
+   JSONObject sudokuObject = new JSONObject();
+   
+   JSONArray cellsArray = new JSONArray();
+   for (int x = 0; x < 9; x++) {
+     for (int y = 0; y < 9; y++) {
+       cellsArray.append(_cells[x][y]); 
+     }
+   }
+   sudokuObject.setJSONArray("Cells", cellsArray);
+   
+   JSONArray buttonsArray = new JSONArray();
+   for (int i = 0; i < cellButtons.size(); i++) {
+     Button button = cellButtons.get(i);
+     int x = (int)((button.getPosition().x - width / 2f) / cellSizeX) + 4;
+     int y = (int)((button.getPosition().y - height / 2f) / cellSizeY) + 4;
+     
+     JSONObject buttonObject = new JSONObject();
+     buttonObject.setInt("x", x);
+     buttonObject.setInt("y", y);
+     
+     buttonsArray.append(buttonObject);
+   }
+   sudokuObject.setJSONArray("Buttons", buttonsArray);
+   
+  return sudokuObject; 
+ }
+ 
+ public void loadJSONObject(JSONObject sudokuObject) {
+   JSONArray cellsArray = sudokuObject.getJSONArray("Cells");
+   for (int i = 0; i < cellsArray.size(); i++) {
+     _cells[i / 9][i % 9] = cellsArray.getInt(i); 
+   }
+   
+   cellButtons.clear();
+   JSONArray buttonsArray = sudokuObject.getJSONArray("Buttons");
+   for (int i = 0; i < buttonsArray.size(); i++) {
+     JSONObject buttonObject = buttonsArray.getJSONObject(i);
+     
+     final int x = buttonObject.getInt("x");
+     final int y = buttonObject.getInt("y");
+     
+     float startX = width / 2f - (9 * cellSizeX) / 2f;
+     float startY = height / 2f - (9 * cellSizeY) / 2f;
+     
+     float buttonPosX = startX + x * cellSizeX + cellSizeX / 2f;
+     float buttonPosY = startY + y * cellSizeY + cellSizeY / 2f;
+     Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
+     button.setColor(color(30));
+     button.addAction(() -> {
+       _cells[x][y] = this.choosed;
+     });
+     cellButtons.add(button);
+   }
+   
+   choosed = 0;
+ }
 }
