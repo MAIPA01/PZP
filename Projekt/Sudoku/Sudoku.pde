@@ -28,6 +28,7 @@ int currentMinutes = 0;
 
 // END
 TextButton returnToMenuButton;
+boolean newRekord = false;
 
 void setup() {
  size(400, 400);
@@ -60,6 +61,11 @@ void setup() {
      board.generateLevel(SUDOKU_LEVEL.HARD);
    
    board.setChoosed(0);
+   for (int i = 0; i < 9; i++) {
+    numberButtons[i].setColor(color(255));
+    numberButtons[i].setHasStroke(false);  
+    numberButtons[i].setTextColor(color(0));
+   }
    
    currentMiliseconds = 0;
    currentSeconds = 0;
@@ -73,6 +79,13 @@ void setup() {
    // load sudoku board
    loadSudokuBoardFromJson();
    println("Loaded");
+   
+   board.setChoosed(0);
+   for (int i = 0; i < 9; i++) {
+    numberButtons[i].setColor(color(255));
+    numberButtons[i].setHasStroke(false);  
+    numberButtons[i].setTextColor(color(0));
+   }
    currentScreen = SCREEN_TYPES.GAME;
  });
  
@@ -123,6 +136,7 @@ void setup() {
  // END
  returnToMenuButton = new TextButton("RETURN TO MENU", width / 2f, height / 2f + 55, 200, 25);
  returnToMenuButton.addAction(() -> {
+   newRekord = false;
    currentScreen = SCREEN_TYPES.MENU;
  });
 }
@@ -132,6 +146,9 @@ void draw() {
   screen.background(128);
   
   if (currentScreen == SCREEN_TYPES.MENU) {
+    screen.pushMatrix();
+    screen.pushStyle();
+    
     int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
     int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
     String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
@@ -144,8 +161,14 @@ void draw() {
     loadButton.display(screen);
     exitButton.display(screen);
     levelDropdown.display(screen);
+    
+    screen.popStyle();
+    screen.popMatrix();
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
+    screen.pushMatrix();
+    screen.pushStyle();
+    
     currentMiliseconds += 1000f / frameRate;
     if (currentMiliseconds > 1000) {
       currentSeconds += currentMiliseconds / 1000;
@@ -169,9 +192,42 @@ void draw() {
     int seconds = currentSeconds;
     String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
     screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 25 + textHeight / 2f);
+    
+    screen.popStyle();
+    screen.popMatrix();
   }
   else if (currentScreen == SCREEN_TYPES.END) {
+    screen.pushMatrix();
+    screen.pushStyle();
+    
+    screen.fill(255);
+    screen.textSize(40);
+    float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
+    screen.text("Koniec", screen.width / 2f - screen.textWidth("Koniec") / 2f, 60 + textHeight / 2f);
+    
+    if (newRekord) {
+      screen.fill(255, 0, 0);
+      screen.text("Nowy Rekord", screen.width / 2f - screen.textWidth("Nowy Rekord") / 2f, 120 + textHeight / 2f);
+      
+      screen.textSize(20);
+      int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
+      int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
+      String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+      screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 150 + textHeight / 2f);
+    }
+    else {
+      screen.textSize(20);
+      int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
+      int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
+      String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+      screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 150 + textHeight / 2f);
+    }
+    
+    screen.textSize(20);
     returnToMenuButton.display(screen);
+    
+    screen.popStyle();
+    screen.popMatrix();
   }
   
   screen.endDraw();
@@ -202,12 +258,14 @@ void mousePressed() {
           
           // save highscores
           saveHighscoresToJson();
+          newRekord = true;
        }
        else if (highscoreMinutes[levelDropdown.getCurrentOption()] == currentMinutes && highscoreSeconds[levelDropdown.getCurrentOption()] < currentSeconds) {
           highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
           
           // save highscores
           saveHighscoresToJson();
+          newRekord = true;
        }
        
        currentScreen = SCREEN_TYPES.END;
