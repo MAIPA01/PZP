@@ -100,20 +100,20 @@ public class RangeSlider extends GameObject {
     return map(value, this._min, this._max, newMin, newMax);
   }
   
-  public void display(PGraphics drawLayer) {
-    drawLayer.pushMatrix();
-    drawLayer.pushStyle();
+  public void draw(PGraphics drawTarget) {
+    drawTarget.pushMatrix();
+    drawTarget.pushStyle();
     
     if (this._handle != -1) {
       // Nie wiem czy bedzie dzialac jak sie przesunie PGraphics
       this.onDrag(this._handle, mouseX);
     }
     
-    drawLayer.rectMode(CORNER);
-    drawLayer.noStroke();
-    drawLayer.fill(225);
-    drawLayer.rect(super._pos.x, super._pos.y, this._w, this._h * 0.25, 55, 55, 55, 55);
-    drawLayer.ellipseMode(CORNER);
+    drawTarget.rectMode(CORNER);
+    drawTarget.noStroke();
+    drawTarget.fill(225);
+    drawTarget.rect(super._pos.x, super._pos.y, this._w, this._h * 0.25, 55, 55, 55, 55);
+    drawTarget.ellipseMode(CORNER);
     
     for (int h = 0; h < this._handles.size(); ++h) {
       
@@ -121,20 +121,20 @@ public class RangeSlider extends GameObject {
       float valX = super._pos.x + this.mapValueToPos(this._handles.get(h).getValue(), 0.0, this._w - this._h * 0.9);
       float w = valX - minX;
       
-      drawLayer.pushMatrix();
-      drawLayer.pushStyle();
-      drawLayer.fill(this._handles.get(h).getColor());
-      drawLayer.rect(minX, super._pos.y, w, this._h * 0.25, 55, 55, 55, 55);
-      drawLayer.popStyle();
-      drawLayer.popMatrix();
+      drawTarget.pushMatrix();
+      drawTarget.pushStyle();
+      drawTarget.fill(this._handles.get(h).getColor());
+      drawTarget.rect(minX, super._pos.y, w, this._h * 0.25, 55, 55, 55, 55);
+      drawTarget.popStyle();
+      drawTarget.popMatrix();
     }
     
     for (int h = 0; h < this._handles.size(); ++h) {
       this._handles.get(h).setPosition(super._pos.x + this.mapValueToPos(this._handles.get(h).getValue(), 0.0, this._w - this._h * 0.9), super._pos.y - this._h * (0.9 - 0.25) * 0.5);
-      this._handles.get(h).display(drawLayer);
+      this._handles.get(h).draw(drawTarget);
     }    
-    drawLayer.popStyle();
-    drawLayer.popMatrix();
+    drawTarget.popStyle();
+    drawTarget.popMatrix();
   }
   
   public Tuple2<Boolean, Integer> insideHandle(float tempX, float tempY) {
@@ -276,26 +276,26 @@ class RangeSliderHandle extends GameObject {
     return new Tuple2<Float, Float>(this._min, this._max);
   }
   
-  public void display(PGraphics drawLayer) {
+  public void draw(PGraphics drawTarget) {
     if (this._dragged) {
-      drawLayer.pushMatrix();
-      drawLayer.pushStyle();
-      drawLayer.noStroke();
-      drawLayer.fill(red(this._c), green(this._c), blue(this._c), 128);
-      drawLayer.ellipseMode(CENTER);
-      drawLayer.circle(super._pos.x + this._diameter / 2f, super._pos.y + this._diameter / 2f, this._diameter * 2f);
-      drawLayer.popStyle();
-      drawLayer.popMatrix();   
+      drawTarget.pushMatrix();
+      drawTarget.pushStyle();
+      drawTarget.noStroke();
+      drawTarget.fill(red(this._c), green(this._c), blue(this._c), 128);
+      drawTarget.ellipseMode(CENTER);
+      drawTarget.circle(super._pos.x + this._diameter / 2f, super._pos.y + this._diameter / 2f, this._diameter * 2f);
+      drawTarget.popStyle();
+      drawTarget.popMatrix();   
     }
 
-    drawLayer.pushMatrix();
-    drawLayer.pushStyle();
-    drawLayer.stroke(255);
-    drawLayer.strokeWeight(this._diameter * 0.09);
-    drawLayer.fill(this._c);
-    drawLayer.circle(super._pos.x, super._pos.y, this._diameter);
-    drawLayer.popStyle();
-    drawLayer.popMatrix();
+    drawTarget.pushMatrix();
+    drawTarget.pushStyle();
+    drawTarget.stroke(255);
+    drawTarget.strokeWeight(this._diameter * 0.09);
+    drawTarget.fill(this._c);
+    drawTarget.circle(super._pos.x, super._pos.y, this._diameter);
+    drawTarget.popStyle();
+    drawTarget.popMatrix();
   }
   
   public boolean inside(float tempX, float tempY) {  

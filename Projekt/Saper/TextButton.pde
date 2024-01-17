@@ -26,4 +26,13 @@ public class TextButton extends Button {
   public void setTextColor(color textColor) {
     _text.setColor(textColor);
   }
+  
+  public void setPosition(float x, float y) {
+    this.setPosition(new PVector(x, y)); 
+  }
+  
+  public void setPosition(PVector pos) {
+    super.setPosition(pos);
+    _text.setPosition(pos);
+  }
 }

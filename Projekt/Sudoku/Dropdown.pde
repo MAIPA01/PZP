@@ -15,7 +15,11 @@ public class Dropdown extends GameObject {
  public Dropdown(float x, float y, int w, float btnH, int svH) {
     super(x, y);
     _btn = new TextButton("Choose Option", x, y, w, btnH);
-    _btn.addAction(() -> { _svIsVisible = !_svIsVisible; });
+    _btn.addAction(() -> {
+      if (mouseButton == LEFT) {
+        _svIsVisible = !_svIsVisible;
+      }
+    });
     
     _sv = new ScrollView(x, y + svH / 2f + btnH / 2f, w, svH, 0, svH);
     _sv.setBgColor(color(164));
@@ -107,22 +111,24 @@ public class Dropdown extends GameObject {
      TextButton opt = new TextButton(name, pos.x + dotRadius - 2.5f, pos.y + (_btn.getHeight() + 5) * (_options.size() + 1), _btn.getWidth() - 5f - 2f * dotRadius, _btn.getHeight());
      final int optNum = _options.size();
      opt.addAction(() -> {
-       // Option
-       _currentOpt = optNum;
-       
-       // Dropdown Button
-       _btn.setText(name);
-       
-       // Dot
-       if (_currentDot != null) _currentDot.enable(false); 
-       dot.enable(true); 
-       _currentDot = dot; 
+       if (mouseButton == LEFT) {
+         // Option
+         _currentOpt = optNum;
+         
+         // Dropdown Button
+         _btn.setText(name);
+         
+         // Dot
+         if (_currentDot != null) _currentDot.enable(false); 
+         dot.enable(true); 
+         _currentDot = dot; 
+       }
      });
      _sv.addObject(opt);
      _options.put(name, opt);
      
-     if ((_btn.getHeight() + 5) * (_options.size() + 2) > _sv.getScrollHeight()) {
-       _sv.setMaxY((_btn.getHeight() + 5) * (_options.size()) + 5); 
+     if ((_btn.getHeight() + 5) * _options.size() + 5 > _sv.getScrollHeight()) {
+       _sv.setMaxY((_btn.getHeight() + 5) * _options.size() + 5); 
      }
      
      if (_sv.getScrollHeight() < _sv.getViewHeight() && !_sv.isScrollEnable()) {

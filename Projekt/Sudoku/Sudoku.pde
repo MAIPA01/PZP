@@ -53,45 +53,51 @@ void setup() {
  
  startButton = new TextButton("START", width / 2f, height / 2f - 40f, 200, 25);
  startButton.addAction(() -> {
-   if (levelDropdown.getCurrentOption() == 0)
-     board.generateLevel(SUDOKU_LEVEL.EASY);
-   else if (levelDropdown.getCurrentOption() == 1)
-     board.generateLevel(SUDOKU_LEVEL.MEDIUM);
-   else if (levelDropdown.getCurrentOption() == 2)
-     board.generateLevel(SUDOKU_LEVEL.HARD);
-   
-   board.setChoosed(0);
-   for (int i = 0; i < 9; i++) {
-    numberButtons[i].setColor(color(255));
-    numberButtons[i].setHasStroke(false);  
-    numberButtons[i].setTextColor(color(0));
+   if (mouseButton == LEFT) {
+     if (levelDropdown.getCurrentOption() == 0)
+       board.generateLevel(SUDOKU_LEVEL.EASY);
+     else if (levelDropdown.getCurrentOption() == 1)
+       board.generateLevel(SUDOKU_LEVEL.MEDIUM);
+     else if (levelDropdown.getCurrentOption() == 2)
+       board.generateLevel(SUDOKU_LEVEL.HARD);
+     
+     board.setChoosed(0);
+     for (int i = 0; i < 9; i++) {
+      numberButtons[i].setColor(color(255));
+      numberButtons[i].setHasStroke(false);  
+      numberButtons[i].setTextColor(color(0));
+     }
+     
+     currentMiliseconds = 0;
+     currentSeconds = 0;
+     currentMinutes = 0;
+     
+     currentScreen = SCREEN_TYPES.GAME;
    }
-   
-   currentMiliseconds = 0;
-   currentSeconds = 0;
-   currentMinutes = 0;
-   
-   currentScreen = SCREEN_TYPES.GAME;
  });
  
  loadButton = new TextButton("LOAD", width / 2f, height / 2f - 10f, 200, 25);
  loadButton.addAction(() -> {
-   // load sudoku board
-   loadSudokuBoardFromJson();
-   println("Loaded");
-   
-   board.setChoosed(0);
-   for (int i = 0; i < 9; i++) {
-    numberButtons[i].setColor(color(255));
-    numberButtons[i].setHasStroke(false);  
-    numberButtons[i].setTextColor(color(0));
+   if (mouseButton == LEFT) {
+     // load sudoku board
+     loadSudokuBoardFromJson();
+     println("Loaded");
+     
+     board.setChoosed(0);
+     for (int i = 0; i < 9; i++) {
+      numberButtons[i].setColor(color(255));
+      numberButtons[i].setHasStroke(false);  
+      numberButtons[i].setTextColor(color(0));
+     }
+     currentScreen = SCREEN_TYPES.GAME;
    }
-   currentScreen = SCREEN_TYPES.GAME;
  });
  
  exitButton = new TextButton("EXIT", width / 2f, height / 2f + 20f, 200, 25);
  exitButton.addAction(() -> {
-  exit(); 
+   if (mouseButton == LEFT) {
+    exit(); 
+   }
  });
  
  // GAME
@@ -123,21 +129,27 @@ void setup() {
  
  saveButton = new TextButton("SAVE", width - 55, 25, 100, 25);
  saveButton.addAction(() -> {
-   // save sudoku board
-   saveSudokuBoardToJson();
-   println("Saved");
+   if (mouseButton == LEFT) {
+     // save sudoku board
+     saveSudokuBoardToJson();
+     println("Saved");
+   }
  });
  
  backToMenuButton = new TextButton("BACK", 55, 25, 100, 25);
  backToMenuButton.addAction(() -> {
-   currentScreen = SCREEN_TYPES.MENU;
+   if (mouseButton == LEFT) {
+     currentScreen = SCREEN_TYPES.MENU;
+   }
  });
  
  // END
  returnToMenuButton = new TextButton("RETURN TO MENU", width / 2f, height / 2f + 55, 200, 25);
  returnToMenuButton.addAction(() -> {
-   newRekord = false;
-   currentScreen = SCREEN_TYPES.MENU;
+   if (mouseButton == LEFT) {
+     newRekord = false;
+     currentScreen = SCREEN_TYPES.MENU;
+   }
  });
 }
 

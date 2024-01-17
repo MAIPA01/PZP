@@ -30,8 +30,20 @@ class SaperBoard extends GameObject {
     }
   }
   
-  public void setBombsNumber(int num) {
-    _bombsNumber = min(num, _cellsNumberX * _cellsNumberY);
+  public void setPosition(float x, float y) {
+    this.setPosition(new PVector(x, y)); 
+  }
+  
+  public void setPosition(PVector pos) {
+    PVector lpos = getPosition();
+    super.setPosition(pos);
+    PVector diff = new PVector(pos.x - lpos.x, pos.y - lpos.y);
+    
+    for (int i = 0; i < _cells.size(); i++) {
+      SaperCell cell = _cells.get(i);
+      PVector cellPos = cell.getPosition();
+      cell.setPosition(cellPos.x + diff.x, cellPos.y + diff.y);
+    }
   }
   
   public void setCellsNumberX(int num) {
@@ -44,26 +56,35 @@ class SaperBoard extends GameObject {
     _bombsNumber = min(_bombsNumber, _cellsNumberX * _cellsNumberY);
   }
   
-  private void checkWin() {
-    int goodNum = 0;
+  public boolean checkBoard() {
+    int goodFlags = 0;
+    boolean allNotBombsEnabled = true;
     for (int i = 0; i < _cells.size(); i++) {
-      
+      SaperCell cell = _cells.get(i);
+      if (cell.isFlaged() && cell.isBomb()) {
+        goodFlags++;
+      }
+      if (!cell.isBomb() && !cell.isEnabled()) {
+         allNotBombsEnabled = false;
+      }
     }
     
-    if (goodNum == _cells.size()) {
-      println("You Won :)");
-      _gameEnded = true;
-    }
+    return goodFlags == _bombsNumber || allNotBombsEnabled;
   }
   
-  public void generate() {
+  public boolean isGameEnded() {
+    return _gameEnded; 
+  }
+  
+  public void generate(int bombsNumber) {
     _gameEnded = false;
+    _bombsNumber = bombsNumber;
     
     int cellSizeX = _w / _cellsNumberX;
     int cellSizeY = _h / _cellsNumberY;
     
-    float startX = (width / 2f) - (_cellsNumberX / 2f) * cellSizeX;
-    float startY = (height / 2f) - (_cellsNumberY / 2f) * cellSizeY;
+    float startX = (width / 2f) - (_cellsNumberX / 2f) * cellSizeX + cellSizeX / 2f;
+    float startY = (height / 2f) - (_cellsNumberY / 2f) * cellSizeY + cellSizeY / 2f;
     
     ArrayList<Integer> emptyCells = new ArrayList<Integer>();
     for (int i = 0; i < _cellsNumberX * _cellsNumberY; i++) {
@@ -83,8 +104,9 @@ class SaperBoard extends GameObject {
         float x = startX + idX * cellSizeX;
         float y = startY + idY * cellSizeY;
         
+        SaperCell cell = null;
         if (bombCells.contains(idX * _cellsNumberY + idY)) {
-          SaperCell cell = new SaperCell(x, y, cellSizeX, cellSizeY);
+          cell = new SaperCell(x, y, cellSizeX, cellSizeY);
           
           cell.addAction(() -> {
             if (mouseButton == LEFT) {
@@ -107,7 +129,7 @@ class SaperBoard extends GameObject {
             }
           }
           
-          SaperCell cell = new SaperCell(x, y, cellSizeX, cellSizeY, bombsNum);
+          cell = new SaperCell(x, y, cellSizeX, cellSizeY, bombsNum);
           final int currIdX = idX;
           final int currIdY = idY;
           
@@ -118,11 +140,13 @@ class SaperBoard extends GameObject {
                   for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _cellsNumberY - 1); iY++) {
                      if (iX != currIdX || iY != currIdY) {
                        SaperCell nearCell = _cells.get(iX * _cellsNumberY + iY);
-                       if (nearCell.isEmpty() && !nearCell.isEnabled()) {
-                          nearCell.Invoke();
-                       }
-                       else if (!nearCell.isEmpty() && !nearCell.isEnabled()) {
-                          nearCell.Invoke();
+                       if (!nearCell.isFlaged()) {
+                         if (nearCell.isEmpty() && !nearCell.isEnabled()) {
+                            nearCell.Invoke();
+                         }
+                         else if (!nearCell.isEmpty() && !nearCell.isEnabled()) {
+                            nearCell.Invoke();
+                         }
                        }
                      }
                   }
@@ -130,6 +154,13 @@ class SaperBoard extends GameObject {
               }
             });
           }
+          
+          cell.addAction(() -> {
+            if (checkBoard()) {
+              println("You Won :)");
+              _gameEnded = true;
+            }
+          });
           
           _cells.add(cell);
         }

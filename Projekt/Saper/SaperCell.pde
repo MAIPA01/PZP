@@ -86,7 +86,7 @@ class SaperCell extends GameObject {
         drawTarget.popMatrix();
       });
     }
-    else {
+    else if (_num != 0) {
       _text = new Text(x, y, "" + _num);
     }
   }
@@ -145,6 +145,21 @@ class SaperCell extends GameObject {
   }
   
   public boolean isFlaged() {
-    return _flaged; 
+    return _flaged && !isEnabled(); 
+  }
+  
+  public void setPosition(float x, float y) {
+    this.setPosition(new PVector(x, y));
+  }
+  
+  public void setPosition(PVector pos) {
+    super.setPosition(pos);
+    _flag.setPosition(pos);
+    if (_isBomb) {
+      _bomb.setPosition(pos); 
+    }
+    else if (_num != 0) {
+      _text.setPosition(pos); 
+    }
   }
 }

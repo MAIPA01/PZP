@@ -84,7 +84,7 @@ public class SudokuBoard {
  private void generateBoard() {
    clearBoard();
    
-    Random rnd = new Random();
+   Random rnd = new Random();
    
    // First run
    ArrayList<ArrayList<Integer>> cellsPosibilities = new ArrayList<ArrayList<Integer>>();
@@ -211,7 +211,9 @@ public class SudokuBoard {
      Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
      button.setColor(color(30));
      button.addAction(() -> {
-       _cells[x][y] = this.choosed;
+       if (mouseButton == LEFT) {
+         _cells[x][y] = this.choosed;
+       }
      });
      cellButtons.add(button);
    }
