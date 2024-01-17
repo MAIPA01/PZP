@@ -69,7 +69,7 @@ public class Button extends GameObject {
  }
  
  public void mousePressed() {
-   if (mouseButton == LEFT && isInside(mouseX, mouseY)) {
+   if (isInside(mouseX, mouseY)) {
      for (ButtonAction a : _actions) {
        a.Invoke();
      }

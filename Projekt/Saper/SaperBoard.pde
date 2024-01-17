@@ -22,7 +22,7 @@ class SaperBoard extends GameObject {
     }
   }
   
-  public void mousePressed() {
+  public void mousePressed() {    
     if (!_gameEnded) {
       for (int i = 0; i < _cells.size(); i++) {
         _cells.get(i).mousePressed();
@@ -75,7 +75,10 @@ class SaperBoard extends GameObject {
           SaperCell cell = new SaperCell(x, y, cellSizeX, cellSizeY);
           
           cell.addAction(() -> {
-            println("GameOver :)");
+            if (mouseButton == LEFT) {
+              println("GameOver :)");
+              _gameEnded = true;
+            }
           });
           
           _cells.add(cell);
@@ -86,7 +89,7 @@ class SaperBoard extends GameObject {
             for (int iY = max(idY - 1, 0); iY <= min(idY + 1, _cellsNumberY - 1); iY++) {
                if (iX != idX || iY != idY) {
                  if (bombCells.contains(iX * _cellsNumberY + iY)) {
-                   bombsNum++; 
+                   bombsNum++;
                  }
                }
             }
@@ -96,20 +99,25 @@ class SaperBoard extends GameObject {
           final int currIdX = idX;
           final int currIdY = idY;
           
-          cell.addAction(() -> {
-            if (cell.isEmpty()) {
-              for (int iX = max(currIdX - 1, 0); iX <= min(currIdX + 1, _cellsNumberX - 1); iX++) {
-                for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _cellsNumberY - 1); iY++) {
-                   if (iX != currIdX || iY != currIdY) {
-                     SaperCell nearCell = _cells.get(iX * _cellsNumberY + iY);
-                     if (nearCell.isEmpty() && !nearCell.isEnabled()) {
-                        nearCell.Invoke();
+          if (cell.isEmpty()) {
+            cell.addAction(() -> {
+              if (mouseButton == LEFT) {
+                for (int iX = max(currIdX - 1, 0); iX <= min(currIdX + 1, _cellsNumberX - 1); iX++) {
+                  for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _cellsNumberY - 1); iY++) {
+                     if (iX != currIdX || iY != currIdY) {
+                       SaperCell nearCell = _cells.get(iX * _cellsNumberY + iY);
+                       if (nearCell.isEmpty() && !nearCell.isEnabled()) {
+                          nearCell.Invoke();
+                       }
+                       else if (!nearCell.isEmpty() && !nearCell.isEnabled()) {
+                          nearCell.Invoke();
+                       }
                      }
-                   }
+                  }
                 }
               }
-            }
-          });
+            });
+          }
           
           _cells.add(cell);
         }
