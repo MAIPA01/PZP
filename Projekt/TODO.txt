@@ -1,0 +1,12 @@
+OGÓLNE:
+- NAPRAWIĆ SCROLL VIEW
+- NAPRAWIĆ TEXT
+- NAPRAWIĆ DROPDOWN
+
+SUDOKU:
+- Ujednolicenie języka
+
+SAPER:
+- Grafika flagi
+- Grafika bomby
+- Menu

@@ -44,6 +44,18 @@ class SaperBoard extends GameObject {
     _bombsNumber = min(_bombsNumber, _cellsNumberX * _cellsNumberY);
   }
   
+  private void checkWin() {
+    int goodNum = 0;
+    for (int i = 0; i < _cells.size(); i++) {
+      
+    }
+    
+    if (goodNum == _cells.size()) {
+      println("You Won :)");
+      _gameEnded = true;
+    }
+  }
+  
   public void generate() {
     _gameEnded = false;
     
