@@ -25,7 +25,7 @@ public class GameObject {
   }
   
   public PVector getPosition() {
-    return _pos;
+    return new PVector(_pos.x, _pos.y);
   }
   
   public boolean isEnabled() {
@@ -36,7 +36,7 @@ public class GameObject {
      _enabled = enable;
   }
   
-  public void display(PGraphics drawLayer) {
+  public void draw(PGraphics drawTarget) {
     
   }
   

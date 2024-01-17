@@ -157,10 +157,10 @@ void draw() {
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
     screen.text("Highscore: " + time, screen.width / 2f - screen.textWidth("Highscore: " + time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
     
-    startButton.display(screen);
-    loadButton.display(screen);
-    exitButton.display(screen);
-    levelDropdown.display(screen);
+    startButton.draw(screen);
+    loadButton.draw(screen);
+    exitButton.draw(screen);
+    levelDropdown.draw(screen);
     
     screen.popStyle();
     screen.popMatrix();
@@ -179,12 +179,12 @@ void draw() {
       currentSeconds = currentSeconds % 60;
     }
     
-    board.display(screen);
+    board.draw(screen);
     for (int i = 0; i < 9; i++) {
-     numberButtons[i].display(screen); 
+     numberButtons[i].draw(screen); 
     }
-    saveButton.display(screen);
-    backToMenuButton.display(screen);
+    saveButton.draw(screen);
+    backToMenuButton.draw(screen);
     
     screen.textSize(20);
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
@@ -203,11 +203,11 @@ void draw() {
     screen.fill(255);
     screen.textSize(40);
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
-    screen.text("Koniec", screen.width / 2f - screen.textWidth("Koniec") / 2f, 60 + textHeight / 2f);
+    screen.text("The End", screen.width / 2f - screen.textWidth("The End") / 2f, 60 + textHeight / 2f);
     
     if (newRekord) {
       screen.fill(255, 0, 0);
-      screen.text("Nowy Rekord", screen.width / 2f - screen.textWidth("Nowy Rekord") / 2f, 120 + textHeight / 2f);
+      screen.text("New Highscore", screen.width / 2f - screen.textWidth("New Highscore") / 2f, 120 + textHeight / 2f);
       
       screen.textSize(20);
       int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
@@ -224,7 +224,7 @@ void draw() {
     }
     
     screen.textSize(20);
-    returnToMenuButton.display(screen);
+    returnToMenuButton.draw(screen);
     
     screen.popStyle();
     screen.popMatrix();

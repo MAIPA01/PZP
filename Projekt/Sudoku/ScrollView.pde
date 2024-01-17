@@ -80,6 +80,22 @@ public class ScrollView extends GameObject {
     _scrollHeight = (_viewMask.height / (_maxY - _minY)) * _viewMask.height;
   }
   
+  public void setPosition(float x, float y) {
+    this.setPosition(new PVector(x, y));
+  }
+  
+  public void setPosition(PVector pos) {
+    PVector lpos = getPosition();
+    super.setPosition(pos);
+    PVector diff = new PVector(pos.x - lpos.x, pos.y - lpos.y);
+    
+    for (int i = 0; i < _objects.size(); i++) {
+      GameObject obj = _objects.get(i);
+      PVector objectLPos = obj.getPosition();
+      obj.setPosition(objectLPos.x + diff.x, objectLPos.y + diff.y);
+    }
+  }
+  
   public void setBgColor(color bg) {
    _bgColor = bg; 
   }
@@ -117,15 +133,15 @@ public class ScrollView extends GameObject {
   }
   
   public boolean isScrollEnable() {
-     return _scrollEnable; 
+     return _scrollEnable;
   }
   
-  public void display(PGraphics drawLayer) {
-   drawLayer.pushMatrix();
-   drawLayer.pushStyle();
+  public void draw(PGraphics drawTarget) {
+   drawTarget.pushMatrix();
+   drawTarget.pushStyle();
    
-   drawLayer.imageMode(CENTER);
-   drawLayer.noStroke();
+   drawTarget.imageMode(CENTER);
+   drawTarget.noStroke();
    
    PVector viewPos = getPosition();
    
@@ -136,10 +152,11 @@ public class ScrollView extends GameObject {
    
    // Draw Objects
    _viewMask.pushMatrix();
+   
    _viewMask.translate(-(viewPos.x - _viewMask.width / 2f), -(viewPos.y - _viewMask.height / 2f));
    for (int i = 0; i < _objects.size(); i++) {
      if (_objects.get(i).isEnabled()) {
-        _objects.get(i).display(_viewMask);
+        _objects.get(i).draw(_viewMask);
      }
    }
    _viewMask.popMatrix();
@@ -149,19 +166,19 @@ public class ScrollView extends GameObject {
      _viewMask.rectMode(CENTER);
      _viewMask.noStroke();
      _viewMask.fill(_scrollBgColor);
-      _viewMask.rect(_viewMask.width - _scrollWidth / 2f, _viewMask.height / 2f, _scrollWidth, _viewMask.height);
+     _viewMask.rect(_viewMask.width - _scrollWidth / 2f, _viewMask.height / 2f, _scrollWidth, _viewMask.height);
       
-      float scrollPosY = map(_currScrollY, _minY, _maxY, _scrollHeight / 2f, _viewMask.height - _scrollHeight / 2f);
-      _viewMask.fill(_scrollColor);
-      _viewMask.rect(_viewMask.width - _scrollWidth / 2f, scrollPosY, _scrollWidth, _scrollHeight);
+     float scrollPosY = map(_currScrollY, _minY, _maxY, _scrollHeight / 2f, _viewMask.height - _scrollHeight / 2f);
+     _viewMask.fill(_scrollColor);
+     _viewMask.rect(_viewMask.width - _scrollWidth / 2f, scrollPosY, _scrollWidth, _scrollHeight);
    }
    
    _viewMask.endDraw();
    
-   drawLayer.image(_viewMask, viewPos.x, viewPos.y);
+   drawTarget.image(_viewMask, viewPos.x, viewPos.y);
    
-   drawLayer.popStyle();
-   drawLayer.popMatrix();
+   drawTarget.popStyle();
+   drawTarget.popMatrix();
   }
   
   boolean isInViewMask(float x, float y) {
@@ -201,34 +218,37 @@ public class ScrollView extends GameObject {
   public void mouseDragged() {
      if (_canDrag) {
        _isDragging = true;
-       float deltaScroll = 0f;
-       if (_scrollDrag) {
-         float realScrollPosY = getPosition().y - _viewMask.height / 2f + map(_currScrollY, _minY, _maxY, _scrollHeight / 2f, _viewMask.height - _scrollHeight / 2f);
-         deltaScroll = mouseY - realScrollPosY;
-       }
-       else {         
-         deltaScroll = pmouseY - mouseY;
-       }
        
-       float desiredScrollY = _currScrollY + deltaScroll;
+       if (_maxY > _minY + _viewMask.height) {
+         float deltaScroll = 0f;
+         if (_scrollDrag) {
+           float realScrollPosY = getPosition().y - _viewMask.height / 2f + map(_currScrollY, _minY, _maxY, _scrollHeight / 2f, _viewMask.height - _scrollHeight / 2f);
+           deltaScroll = mouseY - realScrollPosY;
+         }
+         else {         
+           deltaScroll = pmouseY - mouseY;
+         }
          
-       if (desiredScrollY > _maxY) { 
-         desiredScrollY = _maxY;
-       }
-       if (desiredScrollY < _minY) {
-         desiredScrollY = _minY;
-       }
-       deltaScroll = desiredScrollY - _currScrollY;
-       
-       float oldViewPos = map(_currScrollY, 0, _maxY, _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
-       float newViewPos = map(desiredScrollY, 0, _maxY, _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
-       float deltaPos = newViewPos - oldViewPos;
-       
-       _currScrollY = desiredScrollY;
-       
-       for (int i = 0; i < _objects.size(); i++) {
-          PVector oldPos = _objects.get(i).getPosition();
-          _objects.get(i).setPosition(oldPos.x, oldPos.y - deltaPos);
+         float desiredScrollY = _currScrollY + deltaScroll;
+          
+         if (desiredScrollY > _maxY) { 
+           desiredScrollY = _maxY;
+         }
+         if (desiredScrollY < _minY) {
+           desiredScrollY = _minY;
+         }
+         deltaScroll = desiredScrollY - _currScrollY;
+         
+         float oldViewPos = map(_currScrollY, _minY, _maxY, _minY + _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
+         float newViewPos = map(desiredScrollY, _minY, _maxY, _minY + _viewMask.height / 2.f, _maxY - _viewMask.height / 2f);
+         float deltaPos = newViewPos - oldViewPos;
+         
+         _currScrollY = desiredScrollY;
+         
+         for (int i = 0; i < _objects.size(); i++) {
+            PVector oldPos = _objects.get(i).getPosition();
+            _objects.get(i).setPosition(oldPos.x, oldPos.y - deltaPos);
+         }
        }
      }
   }

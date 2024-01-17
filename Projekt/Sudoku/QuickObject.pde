@@ -1,5 +1,5 @@
 public interface DisplayFunction {
-   public void Invoke(QuickObject ref, PGraphics drawLayer);
+   public void Invoke(QuickObject ref, PGraphics drawTarget);
 }
 
 public class QuickObject extends GameObject {
@@ -10,13 +10,13 @@ public class QuickObject extends GameObject {
     _displayFunc = func;
    }
    
-   public void display(PGraphics drawLayer) {
-     drawLayer.pushMatrix();
-     drawLayer.pushStyle();
+   public void draw(PGraphics drawTarget) {
+     drawTarget.pushMatrix();
+     drawTarget.pushStyle();
      
-     _displayFunc.Invoke(this, drawLayer);
+     _displayFunc.Invoke(this, drawTarget);
      
-     drawLayer.popStyle();
-     drawLayer.popMatrix();
+     drawTarget.popStyle();
+     drawTarget.popMatrix();
    }
 }

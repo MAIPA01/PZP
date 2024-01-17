@@ -122,7 +122,9 @@ class SaperCell extends GameObject {
   
   public void mousePressed() {
     if (!isEnabled()) {
-      _button.mousePressed(); 
+      if (!_flaged || mouseButton == RIGHT) {
+        _button.mousePressed(); 
+      }
     }
   }
   

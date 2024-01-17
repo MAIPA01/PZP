@@ -34,42 +34,42 @@ public class SudokuBoard {
     }
  }
  
- public void display(PGraphics drawLayer) {
-   drawLayer.pushMatrix();
-   drawLayer.pushStyle();
+ public void draw(PGraphics drawTarget) {
+   drawTarget.pushMatrix();
+   drawTarget.pushStyle();
    
    float startX = width / 2f - (9 * cellSizeX) / 2f;
    float startY = height / 2f - (9 * cellSizeY) / 2f;
    
    // draw Buttons
    for (int i = 0; i < cellButtons.size(); i++) {
-    cellButtons.get(i).display(drawLayer); 
+    cellButtons.get(i).draw(drawTarget); 
    }
    
    // draw Lines
    for (int i = 0; i <= 9; i++) {
-     if (i % 3 == 0) drawLayer.strokeWeight(4);
-     else drawLayer.strokeWeight(2);
-     drawLayer.line(startX + i * cellSizeX, startY, startX + i * cellSizeX, startY + 9 * cellSizeY);
-     drawLayer.line(startX, startY + i * cellSizeY, startX + 9 * cellSizeX, startY + i * cellSizeY);
+     if (i % 3 == 0) drawTarget.strokeWeight(4);
+     else drawTarget.strokeWeight(2);
+     drawTarget.line(startX + i * cellSizeX, startY, startX + i * cellSizeX, startY + 9 * cellSizeY);
+     drawTarget.line(startX, startY + i * cellSizeY, startX + 9 * cellSizeX, startY + i * cellSizeY);
    }
    
    // draw Numbers
-   drawLayer.textSize(24);
-   float textHeight = (drawLayer.textAscent() + drawLayer.textDescent()) * 0.75f;
+   drawTarget.textSize(24);
+   float textHeight = (drawTarget.textAscent() + drawTarget.textDescent()) * 0.75f;
    for (int x = 0; x < 9; x++) {
     for (int y = 0; y < 9; y++) {
       if (_cells[x][y] != 0) {
-        if (_cells[x][y] == choosed) drawLayer.fill(255, 0, 0);
-        else drawLayer.fill(255);
+        if (_cells[x][y] == choosed) drawTarget.fill(255, 0, 0);
+        else drawTarget.fill(255);
         String text = "" + _cells[x][y];
-        drawLayer.text(text, startX + x * cellSizeX + cellSizeX / 2f - drawLayer.textWidth(text) / 2f, startY + y * cellSizeY + cellSizeY / 2f + textHeight / 2f);
+        drawTarget.text(text, startX + x * cellSizeX + cellSizeX / 2f - drawTarget.textWidth(text) / 2f, startY + y * cellSizeY + cellSizeY / 2f + textHeight / 2f);
       }
     }
    }
    
-   drawLayer.popStyle();
-   drawLayer.popMatrix();
+   drawTarget.popStyle();
+   drawTarget.popMatrix();
  }
  
  private void clearBoard() {

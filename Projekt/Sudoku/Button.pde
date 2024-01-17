@@ -42,25 +42,25 @@ public class Button extends GameObject {
    }
  }
  
- public void display(PGraphics drawLayer) {
-    drawLayer.pushMatrix();
-    drawLayer.pushStyle();
+ public void draw(PGraphics drawTarget) {
+    drawTarget.pushMatrix();
+    drawTarget.pushStyle();
     
-    drawLayer.rectMode(CENTER);
+    drawTarget.rectMode(CENTER);
     if (_hasStroke) {
-     drawLayer.strokeWeight(_strokeWeight);
-     drawLayer.stroke(_strokeColor);
+     drawTarget.strokeWeight(_strokeWeight);
+     drawTarget.stroke(_strokeColor);
     }
     else {
-     drawLayer.noStroke(); 
+     drawTarget.noStroke(); 
     }
-    drawLayer.fill(_color);
+    drawTarget.fill(_color);
     PVector pos = getPosition();
-    drawLayer.translate(pos.x, pos.y);
-    drawLayer.rect(0, 0, _w, _h);
+    drawTarget.translate(pos.x, pos.y);
+    drawTarget.rect(0, 0, _w, _h);
 
-    drawLayer.popStyle();
-    drawLayer.popMatrix();
+    drawTarget.popStyle();
+    drawTarget.popMatrix();
  }
  
  public boolean isInside(float x, float y) {
@@ -69,7 +69,7 @@ public class Button extends GameObject {
  }
  
  public void mousePressed() {
-   if (mouseButton == LEFT && isInside(mouseX, mouseY)) {
+   if (isInside(mouseX, mouseY)) {
      for (ButtonAction a : _actions) {
        a.Invoke();
      }

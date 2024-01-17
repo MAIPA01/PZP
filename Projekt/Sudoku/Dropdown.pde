@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Dropdown extends GameObject {
  private TextButton _btn;
  private ScrollView _sv;
@@ -6,7 +8,7 @@ public class Dropdown extends GameObject {
  
  private int _currentOpt = -1;
  private GameObject _currentDot = null;
- private HashMap<String, TextButton> _options;
+ private LinkedHashMap<String, TextButton> _options;
  
  private QuickObject _triangle;
  
@@ -21,7 +23,7 @@ public class Dropdown extends GameObject {
     _sv.setScrollBgColor(color(200));
     _sv.setScrollWidth(20);
     
-    _options = new HashMap<String, TextButton>();
+    _options = new LinkedHashMap<String, TextButton>();
     
     _triangle = new QuickObject(0, 0, (QuickObject ref, PGraphics drawLayer) -> {
        drawLayer.fill(0);
@@ -34,33 +36,43 @@ public class Dropdown extends GameObject {
      });
  }
  
- public void display(PGraphics drawLayer) {
-    drawLayer.pushMatrix();
-    drawLayer.pushStyle();
+  public void setPosition(float x, float y) {
+    this.setPosition(new PVector(x, y));
+  }
+  
+  public void setPosition(PVector pos) {
+    super.setPosition(pos);
+    _btn.setPosition(pos);
+    _sv.setPosition(pos.x, pos.y + _sv.getViewHeight() / 2f + _btn.getHeight() / 2f);
+  }
+ 
+ public void draw(PGraphics drawTarget) {
+    drawTarget.pushMatrix();
+    drawTarget.pushStyle();
    
-    _btn.display(drawLayer);
+    _btn.draw(drawTarget);
     if (_svIsVisible) { 
-      _sv.display(drawLayer);
+      _sv.draw(drawTarget);
       
       // draw triangle up
-      drawLayer.pushMatrix();
-      drawLayer.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
-      drawLayer.scale(10);
-      drawLayer.rotate(radians(180));
-      _triangle.display(drawLayer);
-      drawLayer.popMatrix();
+      drawTarget.pushMatrix();
+      drawTarget.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
+      drawTarget.scale(10);
+      drawTarget.rotate(radians(180));
+      _triangle.draw(drawTarget);
+      drawTarget.popMatrix();
     }
     else {
       // draw triangle down
-      drawLayer.pushMatrix();
-      drawLayer.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
-      drawLayer.scale(10);
-      _triangle.display(drawLayer);      
-      drawLayer.popMatrix();
+      drawTarget.pushMatrix();
+      drawTarget.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
+      drawTarget.scale(10);
+      _triangle.draw(drawTarget);
+      drawTarget.popMatrix();
     }
     
-    drawLayer.popStyle();
-    drawLayer.popMatrix();
+    drawTarget.popStyle();
+    drawTarget.popMatrix();
  }
  
  public void mousePressed() {
@@ -137,7 +149,7 @@ public class Dropdown extends GameObject {
  }
  
  public void setCurrentOption(int optIndex) {
-   if (optIndex < 0 || optIndex > _options.size()) return;
+   if (optIndex < 0 || optIndex >= _options.size()) return;
    ((TextButton)_options.values().toArray()[optIndex]).Invoke();
  }
  
