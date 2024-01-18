@@ -121,7 +121,7 @@ public class Dropdown extends GameObject {
          // Dot
          if (_currentDot != null) _currentDot.enable(false); 
          dot.enable(true); 
-         _currentDot = dot; 
+         _currentDot = dot;
        }
      });
      _sv.addObject(opt);
@@ -150,13 +150,19 @@ public class Dropdown extends GameObject {
  
  public void setCurrentOption(String optName) {
    if (_options.containsKey(optName)) {
-      _options.get(optName).Invoke();
+     int lastMB = mouseButton;
+     mouseButton = LEFT;
+     _options.get(optName).Invoke();
+     mouseButton = lastMB;
    }
  }
  
  public void setCurrentOption(int optIndex) {
    if (optIndex < 0 || optIndex >= _options.size()) return;
+   int lastMB = mouseButton;
+   mouseButton = LEFT;
    ((TextButton)_options.values().toArray()[optIndex]).Invoke();
+   mouseButton = lastMB;
  }
  
  public int getCurrentOption() {
