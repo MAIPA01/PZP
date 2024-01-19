@@ -133,7 +133,10 @@ class SaperCell extends GameObject {
   }
   
   public void Invoke() {
+    int lastMB = mouseButton;
+    mouseButton = LEFT;
     _button.Invoke();
+    mouseButton = lastMB;
   }
   
   public boolean isBomb() {

@@ -2,7 +2,7 @@ class Text extends GameObject {
   private String _text;
   private color _textColor;
   private float _textSize;
-  private int _textAllign = CENTER;
+  private int _textAlign = CENTER;
   
   
   public Text() {
@@ -27,9 +27,9 @@ class Text extends GameObject {
     _textSize = textSize; 
   }
   
-  public void setAllign(int allign) {
-    if (allign != LEFT && allign != RIGHT && allign != CENTER) return;
-    _textAllign = allign; 
+  public void setAlign(int align) {
+    if (align != LEFT && align != RIGHT && align != CENTER) return;
+    _textAlign = align;
   }
   
   public void draw(PGraphics drawTarget) {
@@ -43,11 +43,8 @@ class Text extends GameObject {
     
     drawTarget.fill(_textColor);
     float x = pos.x;
-    // TO DOKOŃCZYĆ
-    if (_textAllign == LEFT) x += w;
-    else if (_textAllign == CENTER) x -= w / 2f;
-    else if (_textAllign == RIGHT) x -= w;
-    drawTarget.text(_text, x, pos.y + h / 2f);
+    drawTarget.textAlign(_textAlign, CENTER);
+    drawTarget.text(_text, pos.x, pos.y);
     
     drawTarget.popMatrix();
     drawTarget.popStyle();

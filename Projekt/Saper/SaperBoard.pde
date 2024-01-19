@@ -1,7 +1,7 @@
 class SaperBoard extends GameObject {
   
-  private int _w, _h;
-  private int _cellsNumberX, _cellsNumberY;
+  private int _cellWidth, _cellHeight;
+  private int _columns, _rows;
   
   private int _bombsNumber = 10;
   
@@ -9,11 +9,11 @@ class SaperBoard extends GameObject {
   
   private boolean _gameEnded = false;
   
-  public SaperBoard(int w, int h, int cellsNumberX, int cellsNumberY) {
-    _w = w;
-    _h = h;
-    _cellsNumberX = cellsNumberX;
-    _cellsNumberY = cellsNumberY;
+  public SaperBoard(int cellWidth, int cellHeight, int columns, int rows) {
+    _cellWidth = cellWidth;
+    _cellHeight = cellHeight;
+    _columns = columns;
+    _rows = rows;
   }
   
   public void draw(PGraphics drawTarget) {
@@ -46,14 +46,14 @@ class SaperBoard extends GameObject {
     }
   }
   
-  public void setCellsNumberX(int num) {
-    _cellsNumberX = num;
-    _bombsNumber = min(_bombsNumber, _cellsNumberX * _cellsNumberY);
+  public void setRowsNumber(int num) {
+    _rows = num;
+    _bombsNumber = min(_bombsNumber, _rows * _columns);
   }
   
-  public void setCellsNumberY(int num) {
-    _cellsNumberY = num;
-    _bombsNumber = min(_bombsNumber, _cellsNumberX * _cellsNumberY);
+  public void setColumnsNumber(int num) {
+    _columns = num;
+    _bombsNumber = min(_bombsNumber, _rows * _columns);
   }
   
   public boolean checkBoard() {
@@ -68,7 +68,6 @@ class SaperBoard extends GameObject {
          allNotBombsEnabled = false;
       }
     }
-    
     return goodFlags == _bombsNumber || allNotBombsEnabled;
   }
   
@@ -80,14 +79,11 @@ class SaperBoard extends GameObject {
     _gameEnded = false;
     _bombsNumber = bombsNumber;
     
-    int cellSizeX = _w / _cellsNumberX;
-    int cellSizeY = _h / _cellsNumberY;
-    
-    float startX = (width / 2f) - (_cellsNumberX / 2f) * cellSizeX + cellSizeX / 2f;
-    float startY = (height / 2f) - (_cellsNumberY / 2f) * cellSizeY + cellSizeY / 2f;
+    float startX = (width / 2f) - (_columns / 2f) * _cellWidth + _cellWidth / 2f;
+    float startY = (height / 2f) - (_rows / 2f) * _cellHeight + _cellHeight / 2f;
     
     ArrayList<Integer> emptyCells = new ArrayList<Integer>();
-    for (int i = 0; i < _cellsNumberX * _cellsNumberY; i++) {
+    for (int i = 0; i < _rows * _columns; i++) {
        emptyCells.add(i);
     }
     
@@ -99,14 +95,14 @@ class SaperBoard extends GameObject {
     }
     
     _cells.clear();
-    for (int idX = 0; idX < _cellsNumberX; idX++) {
-      for (int idY = 0; idY < _cellsNumberY; idY++) {
-        float x = startX + idX * cellSizeX;
-        float y = startY + idY * cellSizeY;
+    for (int idX = 0; idX < _columns; idX++) {
+      for (int idY = 0; idY < _rows; idY++) {
+        float x = startX + idX * _cellWidth;
+        float y = startY + idY * _cellHeight;
         
         SaperCell cell = null;
-        if (bombCells.contains(idX * _cellsNumberY + idY)) {
-          cell = new SaperCell(x, y, cellSizeX, cellSizeY);
+        if (bombCells.contains(idX * _rows + idY)) {
+          cell = new SaperCell(x, y, _cellWidth, _cellHeight);
           
           cell.addAction(() -> {
             if (mouseButton == LEFT) {
@@ -114,39 +110,40 @@ class SaperBoard extends GameObject {
               _gameEnded = true;
             }
           });
-          
-          _cells.add(cell);
         }
         else {
           int bombsNum = 0;
-          for (int iX = max(idX - 1, 0); iX <= min(idX + 1, _cellsNumberX - 1); iX++) {
-            for (int iY = max(idY - 1, 0); iY <= min(idY + 1, _cellsNumberY - 1); iY++) {
+          for (int iX = max(idX - 1, 0); iX <= min(idX + 1, _columns - 1); iX++) {
+            for (int iY = max(idY - 1, 0); iY <= min(idY + 1, _rows - 1); iY++) {
                if (iX != idX || iY != idY) {
-                 if (bombCells.contains(iX * _cellsNumberY + iY)) {
+                 if (bombCells.contains(iX * _rows + iY)) {
                    bombsNum++;
                  }
                }
             }
           }
           
-          cell = new SaperCell(x, y, cellSizeX, cellSizeY, bombsNum);
+          cell = new SaperCell(x, y, _cellWidth, _cellHeight, bombsNum);
           final int currIdX = idX;
           final int currIdY = idY;
           
           if (cell.isEmpty()) {
             cell.addAction(() -> {
               if (mouseButton == LEFT) {
-                for (int iX = max(currIdX - 1, 0); iX <= min(currIdX + 1, _cellsNumberX - 1); iX++) {
-                  for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _cellsNumberY - 1); iY++) {
+                for (int iX = max(currIdX - 1, 0); iX <= min(currIdX + 1, _columns - 1); iX++) {
+                  for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _rows - 1); iY++) {
                      if (iX != currIdX || iY != currIdY) {
-                       SaperCell nearCell = _cells.get(iX * _cellsNumberY + iY);
+                       SaperCell nearCell = _cells.get(iX * _rows + iY);
                        if (!nearCell.isFlaged()) {
+                         int lastMB = mouseButton;
+                         mouseButton = LEFT;
                          if (nearCell.isEmpty() && !nearCell.isEnabled()) {
                             nearCell.Invoke();
                          }
                          else if (!nearCell.isEmpty() && !nearCell.isEnabled()) {
                             nearCell.Invoke();
                          }
+                         mouseButton = lastMB;
                        }
                      }
                   }
@@ -154,16 +151,15 @@ class SaperBoard extends GameObject {
               }
             });
           }
-          
-          cell.addAction(() -> {
-            if (checkBoard()) {
-              println("You Won :)");
-              _gameEnded = true;
-            }
-          });
-          
-          _cells.add(cell);
         }
+        cell.addAction(() -> {
+          if (checkBoard()) {
+            println("You Won :)");
+            _gameEnded = true;
+          }
+        });
+        
+        _cells.add(cell);
       }
     }
   }
