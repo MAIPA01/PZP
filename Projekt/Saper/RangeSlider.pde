@@ -61,6 +61,10 @@ public class RangeSlider extends GameObject {
     }
   }
   
+  public void setValue(int i, float value) {
+     _handles.get(i).setValue(value);
+  }
+  
   public void setMax(float max) {
     _max = max;
     for (int i = 0; i < _handles.size(); i++) {

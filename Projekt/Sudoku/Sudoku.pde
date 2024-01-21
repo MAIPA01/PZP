@@ -79,7 +79,9 @@ void setup() {
  loadButton = new TextButton("LOAD", width / 2f, height / 2f - 10f, 200, 25);
  loadButton.addAction(() -> {
    if (mouseButton == LEFT) {
-     // load sudoku board
+    File json = dataFile("sudoku.json");
+    if (json.exists() && json.isFile()) {
+      // load sudoku board
      loadSudokuBoardFromJson();
      println("Loaded");
      
@@ -90,6 +92,7 @@ void setup() {
       numberButtons[i].setTextColor(color(0));
      }
      currentScreen = SCREEN_TYPES.GAME;
+    }
    }
  });
  
@@ -168,6 +171,14 @@ void draw() {
     screen.textSize(20);
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
     screen.text("Highscore: " + time, screen.width / 2f - screen.textWidth("Highscore: " + time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
+    
+    File f = dataFile("sudoku.json");
+    if (f.exists() && f.isFile()) {
+      loadButton.setColor(color(255));
+    }
+    else {
+      loadButton.setColor(color(200));
+    }
     
     startButton.draw(screen);
     loadButton.draw(screen);

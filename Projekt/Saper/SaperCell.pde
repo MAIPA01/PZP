@@ -9,6 +9,12 @@ class SaperCell extends GameObject {
   private QuickObject _flag;
   private QuickObject _bomb;
   
+  public SaperCell(float x, float y, int w, int h, JSONObject cellJson) {
+    this(x, y, w, h, cellJson.getBoolean("IsBomb"), cellJson.getInt("Num"));
+    _flaged = cellJson.getBoolean("IsFlaged");
+    enable(cellJson.getBoolean("IsEnabled"));
+  }
+  
   public SaperCell(float x, float y, int w, int h) {
     this(x, y, w, h, true, 0);
   }
@@ -164,5 +170,16 @@ class SaperCell extends GameObject {
     else if (_num != 0) {
       _text.setPosition(pos); 
     }
+  }
+  
+  public JSONObject getJSONObject() {
+    JSONObject cellJson = new JSONObject();
+    
+    cellJson.setBoolean("IsBomb", _isBomb);
+    cellJson.setBoolean("IsFlaged", _flaged);
+    cellJson.setInt("Num", _num);
+    cellJson.setBoolean("IsEnabled", isEnabled());
+    
+    return cellJson;
   }
 }

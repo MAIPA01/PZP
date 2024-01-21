@@ -10,19 +10,19 @@ public class Button extends GameObject {
  private color _strokeColor;
  private ArrayList<ButtonAction> _actions = new ArrayList<ButtonAction>();
  
- public Button(PVector pos, float w, float h) {
+ Button(PVector pos, float w, float h) {
    this(pos.x, pos.y, w, h);
  }
  
- public Button(float x, float y, float w, float h) {
+ Button(float x, float y, float w, float h) {
   this(x, y, w, h, color(255)); 
  }
  
- public Button(float x, float y, float w, float h, color col) {
+ Button(float x, float y, float w, float h, color col) {
    this(x, y, w, h, col, false, 0, color(0));
  }
  
- public Button(float x, float y, float w, float h, color col, boolean hasStroke, float strokeWeight, color strokeColor) {
+ Button(float x, float y, float w, float h, color col, boolean hasStroke, float strokeWeight, color strokeColor) {
   super(x, y);
   _w = w;
   _h = h;
@@ -70,9 +70,7 @@ public class Button extends GameObject {
  
  public void mousePressed() {
    if (isInside(mouseX, mouseY)) {
-     for (ButtonAction a : _actions) {
-       a.Invoke();
-     }
+     Invoke();
    }
  }
  

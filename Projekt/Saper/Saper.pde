@@ -1,7 +1,7 @@
 import java.util.*;
 
 PGraphics screen;
-enum SCREEN_TYPES { MENU, GAME, GAME_OVER, GAME_WIN };
+enum SCREEN_TYPES { MENU, GAME, END };
 SCREEN_TYPES currentScreen = SCREEN_TYPES.MENU;
 
 // MENU
@@ -31,6 +31,7 @@ TextButton saveButton = null;
 TextButton backButton = null;
 
 // END
+Text gameStatusText = null;
 
 void setup() {
   size(800, 800);
@@ -82,7 +83,13 @@ void setup() {
   loadButton = new TextButton("LOAD", width / 2f, height / 2f + 40f, 150f, 30f);
   loadButton.addAction(() -> {
     if (mouseButton == LEFT) {
-      println("LOADING... Żartuje to też nie działa"); 
+      File f = dataFile("saper.json");
+      if (f.exists() && f.isFile()) {
+        loadSaperBoardFromJson();
+        println("LOADED");
+        
+        currentScreen = SCREEN_TYPES.GAME;
+      }
     }
   });
   
@@ -100,7 +107,8 @@ void setup() {
   saveButton = new TextButton("SAVE", width - 60f, 30f, 100f, 50f);
   saveButton.addAction(() -> {
     if (mouseButton == LEFT) {
-      println("SAVING... Żart nie działa jeszcze");
+      saveSaperBoardToJson();
+      println("SAVED");
     }
   });
   
@@ -110,6 +118,10 @@ void setup() {
       currentScreen = SCREEN_TYPES.MENU;
     }
   });
+  
+  // END
+  gameStatusText = new Text(width / 2f, 30, "");
+  gameStatusText.setTextSize(40f);
 }
 
 void draw() {
@@ -133,6 +145,14 @@ void draw() {
     columnsNumText.setText("Columns: " + (int)(float)columnsSlider.getValues().get(0));
     columnsNumText.draw(screen);
     
+    File f = dataFile("saper.json");
+    if (f.exists() && f.isFile()) {
+      loadButton.setColor(color(255));
+    }
+    else {
+      loadButton.setColor(color(175));
+    }
+    
     startButton.draw(screen);
     loadButton.draw(screen);
     exitButton.draw(screen);
@@ -155,11 +175,11 @@ void draw() {
     saveButton.draw(screen);
     backButton.draw(screen);
   }
-  else if (currentScreen == SCREEN_TYPES.GAME_OVER) {
-    
-  }
-  else if (currentScreen == SCREEN_TYPES.GAME_WIN) {
-    
+  else if (currentScreen == SCREEN_TYPES.END) {
+    board.draw(screen);
+    gameTimeText.draw(screen);
+    gameStatusText.draw(screen);
+    backButton.draw(screen);
   }
   
   screen.endDraw();
@@ -184,20 +204,18 @@ void mousePressed() {
     
     if (board.isGameEnded()) {
       if (board.checkBoard()) {
-        currentScreen = SCREEN_TYPES.GAME_WIN;
-        println("WIN");
+        gameStatusText.setText("You Won :)");
+        gameStatusText.setColor(color(0, 0, 255));
       }
       else {
-        currentScreen = SCREEN_TYPES.GAME_OVER;
-        println("OVER");
+        gameStatusText.setText("You Lost :(");
+        gameStatusText.setColor(color(255, 0, 0));
       }
+      currentScreen = SCREEN_TYPES.END;
     }
   }
-  else if (currentScreen == SCREEN_TYPES.GAME_OVER) {
-    
-  }
-  else if (currentScreen == SCREEN_TYPES.GAME_WIN) {
-    
+  else if (currentScreen == SCREEN_TYPES.END) {
+    backButton.mousePressed();
   }
 }
 
@@ -210,10 +228,42 @@ void mouseReleased() {
   else if (currentScreen == SCREEN_TYPES.GAME) {
     
   }
-  else if (currentScreen == SCREEN_TYPES.GAME_OVER) {
+  else if (currentScreen == SCREEN_TYPES.END) {
     
   }
-  else if (currentScreen == SCREEN_TYPES.GAME_WIN) {
-    
-  }
+}
+
+void saveSaperBoardToJson() {
+ JSONObject saperJson = new JSONObject();
+ saperJson.setInt("Rows", (int)(float)rowsSlider.getValues().get(0));
+ saperJson.setInt("Columns", (int)(float)columnsSlider.getValues().get(0));
+ saperJson.setInt("Bombs", (int)(float)bombsSlider.getValues().get(0));
+ 
+ JSONObject currentTime = new JSONObject();
+ currentTime.setInt("Miliseconds", currentMiliseconds);
+ currentTime.setInt("Seconds", currentSeconds);
+ currentTime.setInt("Minutes", currentMinutes);
+ 
+ saperJson.setJSONObject("Time", currentTime);
+ 
+ saperJson.setJSONObject("Board", board.getJSONObject());
+ 
+ saveJSONObject(saperJson, "./data/saper.json");
+}
+
+void loadSaperBoardFromJson() {
+  JSONObject saperJson = loadJSONObject("./data/saper.json");
+  
+  rowsSlider.setValue(0, (float)saperJson.getInt("Rows"));
+  columnsSlider.setValue(0, (float)saperJson.getInt("Columns"));
+  
+  bombsSlider.setMax((int)(float)rowsSlider.getValues().get(0) * (int)(float)columnsSlider.getValues().get(0) - 1);
+  bombsSlider.setValue(0, (float)saperJson.getInt("Bombs"));
+  
+  JSONObject currentTime = saperJson.getJSONObject("Time");
+  currentMiliseconds = currentTime.getInt("Miliseconds");
+  currentSeconds = currentTime.getInt("Seconds");
+  currentMinutes = currentTime.getInt("Minutes");
+  
+  board.loadJSONObject(saperJson.getJSONObject("Board"));
 }

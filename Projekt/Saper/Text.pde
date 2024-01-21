@@ -36,14 +36,11 @@ class Text extends GameObject {
     drawTarget.pushMatrix();
     drawTarget.pushStyle();
     
-    drawTarget.textSize(_textSize);
-    float h = (drawTarget.textAscent() + drawTarget.textDescent()) * 0.75f;
-    float w = drawTarget.textWidth(_text);
-    PVector pos = getPosition();
-    
+    drawTarget.textSize(_textSize);    
     drawTarget.fill(_textColor);
-    float x = pos.x;
     drawTarget.textAlign(_textAlign, CENTER);
+    
+    PVector pos = getPosition();
     drawTarget.text(_text, pos.x, pos.y);
     
     drawTarget.popMatrix();

@@ -106,7 +106,6 @@ class SaperBoard extends GameObject {
           
           cell.addAction(() -> {
             if (mouseButton == LEFT) {
-              println("GameOver :)");
               _gameEnded = true;
             }
           });
@@ -154,7 +153,6 @@ class SaperBoard extends GameObject {
         }
         cell.addAction(() -> {
           if (checkBoard()) {
-            println("You Won :)");
             _gameEnded = true;
           }
         });
@@ -162,5 +160,84 @@ class SaperBoard extends GameObject {
         _cells.add(cell);
       }
     }
+  }
+  
+  public JSONObject getJSONObject() {
+    JSONObject boardJson = new JSONObject();
+    
+    boardJson.setInt("Rows", _rows);
+    boardJson.setInt("Columns", _columns);
+    boardJson.setInt("Bombs", _bombsNumber);
+    
+    JSONArray cellsArray = new JSONArray();
+    for (int i = 0; i < _rows * _columns; i++) {
+      cellsArray.append(_cells.get(i).getJSONObject()); 
+    }
+    boardJson.setJSONArray("Cells", cellsArray);
+    
+    return boardJson;
+  }
+  
+  public void loadJSONObject(JSONObject boardJson) {
+     _rows = boardJson.getInt("Rows");
+     _columns = boardJson.getInt("Columns");
+     _bombsNumber = boardJson.getInt("Bombs");
+     
+     _cells.clear();
+     float startX = (width / 2f) - (_columns / 2f) * _cellWidth + _cellWidth / 2f;
+     float startY = (height / 2f) - (_rows / 2f) * _cellHeight + _cellHeight / 2f;
+     
+     JSONArray cellsArray = boardJson.getJSONArray("Cells");
+     for (int idX = 0; idX < _columns; idX++) {
+       for (int idY = 0; idY < _rows; idY++) {
+         float x = startX + idX * _cellWidth;
+         float y = startY + idY * _cellHeight;
+         
+         SaperCell cell = new SaperCell(x, y, _cellWidth, _cellHeight, cellsArray.getJSONObject(idX * _rows + idY));
+         
+         if (cell.isBomb()) {
+           cell.addAction(() -> {
+            if (mouseButton == LEFT) {
+              _gameEnded = true;
+            }
+          }); 
+         }
+         else if (cell.isEmpty()) {
+           final int currIdX = idX;
+           final int currIdY = idY;
+           
+           cell.addAction(() -> {
+              if (mouseButton == LEFT) {
+                for (int iX = max(currIdX - 1, 0); iX <= min(currIdX + 1, _columns - 1); iX++) {
+                  for (int iY = max(currIdY - 1, 0); iY <= min(currIdY + 1, _rows - 1); iY++) {
+                     if (iX != currIdX || iY != currIdY) {
+                       SaperCell nearCell = _cells.get(iX * _rows + iY);
+                       if (!nearCell.isFlaged()) {
+                         int lastMB = mouseButton;
+                         mouseButton = LEFT;
+                         if (nearCell.isEmpty() && !nearCell.isEnabled()) {
+                            nearCell.Invoke();
+                         }
+                         else if (!nearCell.isEmpty() && !nearCell.isEnabled()) {
+                            nearCell.Invoke();
+                         }
+                         mouseButton = lastMB;
+                       }
+                     }
+                  }
+                }
+              }
+            });
+         }
+         
+         cell.addAction(() -> {
+          if (checkBoard()) {
+            _gameEnded = true;
+          }
+        });
+         
+         _cells.add(cell);
+       }
+     }
   }
 }
