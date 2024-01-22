@@ -22,10 +22,10 @@ class SaperBoard extends GameObject {
     }
   }
   
-  public void mousePressed() {    
+  public void mouseClicked() {    
     if (!_gameEnded) {
       for (int i = 0; i < _cells.size(); i++) {
-        _cells.get(i).mousePressed();
+        _cells.get(i).mouseClicked();
       }
     }
   }

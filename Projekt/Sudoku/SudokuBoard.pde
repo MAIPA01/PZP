@@ -17,7 +17,7 @@ public enum SUDOKU_LEVEL {
   }
 };
 
-public class SudokuBoard {
+public class SudokuBoard extends GameObject {
  
  private float cellSizeX = 30f;
  private float cellSizeY = 30f;
@@ -28,6 +28,7 @@ public class SudokuBoard {
  private int choosed = 0;
  
  SudokuBoard() {
+   super(0, 0);
     _cells = new int[9][];
     for (int i = 0; i < 9; i++) {
      _cells[i] = new int[9];
@@ -223,9 +224,9 @@ public class SudokuBoard {
    this.choosed = choosed;
  }
  
- public void mousePressed() {
+ public void mouseClicked() {
    for (int i = 0; i < cellButtons.size(); i++) {
-    cellButtons.get(i).mousePressed(); 
+    cellButtons.get(i).mouseClicked(); 
    }
  }
  

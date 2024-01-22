@@ -68,7 +68,7 @@ public class Button extends GameObject {
   return x >= pos.x - _w / 2f && x <= pos.x + _w / 2f && y >= pos.y - _h / 2f && y <= pos.y + _h / 2f;
  }
  
- public void mousePressed() {
+ public void mouseClicked() {
    if (isInside(mouseX, mouseY)) {
      Invoke();
    }

@@ -25,17 +25,16 @@ class Text extends GameObject {
   }
   
   draw(drawTarget) {
-    drawTarget.pushMatrix();
-    drawTarget.pushStyle();
+    drawTarget.push();
     
+    drawTarget.noStroke();
     drawTarget.textSize(this.textSize);
     drawTarget.fill(this.textColor);
     drawTarget.textAlign(this.textAlign, CENTER);
     
-    pos = super.getPosition();
+    let pos = super.getPosition();
     drawTarget.text(this.text, pos.x, pos.y);
     
-    drawTarget.popStyle();
-    drawTarget.popMatrix();
+    drawTarget.pop();
   }
 }

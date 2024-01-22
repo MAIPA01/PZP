@@ -126,10 +126,10 @@ class SaperCell extends GameObject {
     drawTarget.popMatrix();
   }
   
-  public void mousePressed() {
+  public void mouseClicked() {
     if (!isEnabled()) {
       if (!_flaged || mouseButton == RIGHT) {
-        _button.mousePressed(); 
+        _button.mouseClicked(); 
       }
     }
   }

@@ -16,14 +16,13 @@ class Button extends GameObject {
   }
   
   invoke() {
-    for (let a in this.actions) {
-      a(); 
+    for (let i = 0; i < this.actions.length; i++) {
+      this.actions[i](); 
     }
   }
   
   draw(drawTarget) {
-    drawTarget.pushMatrix();
-    drawTarget.pushStyle();
+    drawTarget.push();
     
     drawTarget.rectMode(CENTER);
     
@@ -37,20 +36,19 @@ class Button extends GameObject {
     
     drawTarget.fill(this.col);
     
-    pos = super.getPosition();
+    let pos = super.getPosition();
     drawTarget.translate(pos.x, pos.y);
     drawTarget.rect(0, 0, this.w, this.h);
     
-    drawTarget.popStyle();
-    drawTarget.popMatrix();
+    drawTarget.pop();
   }
   
   isInside(x, y) {
-    pos = this.getPosition();
+    let pos = super.getPosition();
     return x >= pos.x - this.w / 2 && x <= pos.x + this.w / 2 && y >= pos.y - this.h / 2 && y <= pos.y + this.h / 2;
   }
   
-  mousePressed() {
+  mouseClicked() {
     if (this.isInside(mouseX, mouseY)) {
       this.invoke();
     }

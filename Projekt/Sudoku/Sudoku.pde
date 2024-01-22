@@ -257,22 +257,22 @@ void draw() {
   image(screen, 0, 0);
 }
 
-void mousePressed() {
+void mouseClicked() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    levelDropdown.mousePressed();
+    levelDropdown.mouseClicked();
     if (!levelDropdown.areOptionsVisible()) {
-      startButton.mousePressed();
-      loadButton.mousePressed();
-      exitButton.mousePressed();
+      startButton.mouseClicked();
+      loadButton.mouseClicked();
+      exitButton.mouseClicked();
     }
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
-    board.mousePressed();
+    board.mouseClicked();
     for (int i = 0; i < 9; i++) {
-     numberButtons[i].mousePressed();
+     numberButtons[i].mouseClicked();
     }
-    saveButton.mousePressed();
-    backToMenuButton.mousePressed();
+    saveButton.mouseClicked();
+    backToMenuButton.mouseClicked();
     
     if (board.checkBoard()) {
        if (highscoreMinutes[levelDropdown.getCurrentOption()] < currentMinutes) {
@@ -295,7 +295,19 @@ void mousePressed() {
     }
   }
   else if (currentScreen == SCREEN_TYPES.END) {
-    returnToMenuButton.mousePressed();
+    returnToMenuButton.mouseClicked();
+  }
+}
+
+void mousePressed() {
+  if (currentScreen == SCREEN_TYPES.MENU) {
+    levelDropdown.mousePressed();
+  }
+  else if (currentScreen == SCREEN_TYPES.GAME) {    
+    
+  }
+  else if (currentScreen == SCREEN_TYPES.END) {
+    
   }
 }
 

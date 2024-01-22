@@ -192,6 +192,14 @@ public class ScrollView extends GameObject {
     return x >= pos.x + _viewMask.width / 2f - _scrollWidth && x <= pos.x + _viewMask.width / 2f && y >= pos.y - _viewMask.height / 2f + scrollPosY - _scrollHeight / 2f && y <= pos.y - _viewMask.height / 2f + scrollPosY + _scrollHeight / 2f;
   }
   
+  public void mouseClicked() {
+   if (mouseButton == LEFT && isInViewMask(mouseX, mouseY)) {
+        for (int i = 0; i < _objects.size(); i++) {
+          _objects.get(i).mouseClicked();
+        }
+   }
+  }
+  
   public void mousePressed() {
     if (mouseButton == LEFT && isInViewMask(mouseX, mouseY)) {
      _canDrag = true;
@@ -201,15 +209,7 @@ public class ScrollView extends GameObject {
     }
   }
   
-  public void mouseReleased() {
-    if (!_isDragging) {
-      if (isInViewMask(mouseX, mouseY)) {
-        for (int i = 0; i < _objects.size(); i++) {
-          _objects.get(i).mousePressed();
-        }
-      }
-    }
-    
+  public void mouseReleased() {    
     _canDrag = false;
     _scrollDrag = false;
     _isDragging = false;

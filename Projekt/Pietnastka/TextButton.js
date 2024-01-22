@@ -8,17 +8,19 @@ class TextButton extends Button {
   draw(drawTarget) {
     super.draw(drawTarget);
     
-    drawTarget.pushMatrix();
-    drawTarget.pushStyle();
+    drawTarget.push();
     
     this.text.draw(drawTarget);
     
-    drawTarget.popStyle();
-    drawTarget.popMatrix();
+    drawTarget.pop();
   }
   
   setText(text) {
     this.text.setText(text); 
+  }
+  
+  setTextSize(size) {
+    this.text.setSize(size); 
   }
   
   setTextColor(Color) {

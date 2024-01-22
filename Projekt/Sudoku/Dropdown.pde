@@ -79,8 +79,12 @@ public class Dropdown extends GameObject {
     drawTarget.popMatrix();
  }
  
+ public void mouseClicked() {
+   _btn.mouseClicked();
+   if (_svIsVisible) _sv.mouseClicked();
+ }
+ 
  public void mousePressed() {
-   _btn.mousePressed();
    if (_svIsVisible) _sv.mousePressed();
  }
  

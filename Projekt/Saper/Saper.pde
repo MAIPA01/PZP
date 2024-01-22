@@ -187,20 +187,18 @@ void draw() {
   image(screen, 0, 0);
 }
 
-void mousePressed() {
+void mouseClicked() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    bombsSlider.mousePressed();
-    rowsSlider.mousePressed();
-    columnsSlider.mousePressed();
-    
-    startButton.mousePressed();
-    loadButton.mousePressed();
-    exitButton.mousePressed();
+    startButton.mouseClicked();
+    loadButton.mouseClicked();
+    exitButton.mouseClicked(); 
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
-    saveButton.mousePressed();
-    backButton.mousePressed();
-    board.mousePressed();
+    startButton.mouseClicked();
+    loadButton.mouseClicked();
+    exitButton.mouseClicked();
+    
+    board.mouseClicked();
     
     if (board.isGameEnded()) {
       if (board.checkBoard()) {
@@ -215,7 +213,21 @@ void mousePressed() {
     }
   }
   else if (currentScreen == SCREEN_TYPES.END) {
-    backButton.mousePressed();
+     backButton.mouseClicked();
+  }
+}
+
+void mousePressed() {
+  if (currentScreen == SCREEN_TYPES.MENU) {
+    bombsSlider.mousePressed();
+    rowsSlider.mousePressed();
+    columnsSlider.mousePressed();
+  }
+  else if (currentScreen == SCREEN_TYPES.GAME) {    
+    
+  }
+  else if (currentScreen == SCREEN_TYPES.END) {
+    
   }
 }
 

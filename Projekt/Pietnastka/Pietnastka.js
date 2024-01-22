@@ -1,30 +1,27 @@
 let screen;
 
-let testButton;
+let board;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   
   screen = createGraphics(width, height);
   
-  testButton = new TextButton(width / 2, height / 2, 100, 20, "TEST");
-  testButton.addAction(function () {
-    console.log("TEST");
-  });
+  board = new PietnastkaBoard(width / 2, height / 2);
 }
 
-function draw() {  
-  screen.beginDraw();
+function draw() {
+  screen.push();
   
-  screen.background(255);
+  screen.background(200);
   
-  testButton.draw(screen);
+  board.draw(screen);
   
-  screen.endDraw();
+  image(screen, 0, 0);
   
-  image(screen);
+  screen.pop();
 }
 
-function mousePressed() {
-  testButton.mousePressed(); 
+function mouseClicked() {
+  
 }

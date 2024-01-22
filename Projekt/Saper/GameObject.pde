@@ -40,6 +40,10 @@ public class GameObject {
     
   }
   
+  public void mouseClicked() {
+    
+  }
+  
   public void mousePressed() {
     
   }
