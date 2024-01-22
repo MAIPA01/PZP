@@ -23,5 +23,9 @@ function draw() {
 }
 
 function mouseClicked() {
+  board.mouseClicked();
   
+  if (board.checkBoard()) {
+    console.log("WIN"); 
+  }
 }

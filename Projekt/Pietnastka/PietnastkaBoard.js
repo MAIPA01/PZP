@@ -4,6 +4,10 @@ class PietnastkaBoard extends GameObject {
     super(x, y);
     this.cells = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     
+    this.buttonWidth = 80;
+    this.buttonHeight = 80;
+    this.strokeWeight = 2;
+    
     this.TUP = 0;
     this.TRIGHT = 1;
     this.TDOWN = 2;
@@ -11,8 +15,8 @@ class PietnastkaBoard extends GameObject {
     
     this.triangles = [];
     for (let i = 0; i < 4; i++) {
-      let sizeX = 75;
-      let sizeY = 25;
+      let sizeX = this.buttonWidth / 2;
+      let sizeY = this.buttonHeight / 5;
       
       let drawFunc = (ref, drawTarget) => {
         drawTarget.push();
@@ -28,14 +32,20 @@ class PietnastkaBoard extends GameObject {
         drawTarget.pop();
       }
       
-      this.triangles.push(new QuickObject(x, y, drawFunc));
+      let angle = radians(90 * i);
+      let cosa = cos(angle);
+      let sina = sin(angle);
+      let arrow = new QuickObjectButton(x, y, abs(sizeX * cosa + sizeY * sina), abs(sizeY * cosa + sizeX * sina), drawFunc);
+      arrow.setColor(color(0, 0, 0, 0));
+      arrow.addAction(() => {
+        if (mouseButton == LEFT) {
+          this.arrowFunc(i);
+        }
+      });
+      this.triangles.push(arrow);
     }
     
-    this.buttonWidth = 80;
-    this.buttonHeight = 80;
-    this.strokeWeight = 2;
     this.textSize = 25;
-    this.cellsButtons = [];
     this.generate();
   }
   
@@ -49,15 +59,113 @@ class PietnastkaBoard extends GameObject {
     let startY = pos.y - 2 * this.buttonHeight + this.buttonHeight / 2;
     
     for (let i = 0; i < this.cells.length; i++) {
+      let x = i % 4;
+      let y = floor(i / 4);
       if (this.cells[i] != 0) {
-        let cellButton = new TextButton(startX + (i % 4) * this.buttonWidth, startY + floor(i / 4) * this.buttonHeight, this.buttonWidth, this.buttonHeight, "" + this.cells[i]);
+        let cellButton = new TextButton(startX + x * this.buttonWidth, startY + y * this.buttonHeight, this.buttonWidth, this.buttonHeight, "" + this.cells[i]);
         cellButton.setStrokeWeight(this.strokeWeight);
         cellButton.setStrokeColor(color(0));
         cellButton.setHasStroke(true);
         cellButton.setTextSize(this.textSize);
         this.cellsButtons.push(cellButton);
       }
+      else {
+        this.updateArrows(x, y);
+        this.cellsButtons.push(new GameObject(startX + x * this.buttonWidth, startY + y * this.buttonHeight));
+      }
     }
+  }
+  
+  updateArrows(x, y) {
+    let pos = super.getPosition();
+    let startX = pos.x - 2 * this.buttonWidth + this.buttonWidth / 2;
+    let startY = pos.y - 2 * this.buttonHeight + this.buttonHeight / 2;
+    
+    if (x != 3) {
+      let twidth = this.triangles[this.TLEFT].getWidth();
+      this.triangles[this.TLEFT].enable(true);
+      this.triangles[this.TLEFT].setPosition(startX + (x * this.buttonWidth) + (this.buttonWidth / 2) - (twidth / 2) - this.strokeWeight, startY + y * this.buttonHeight);
+    }
+    else {
+      this.triangles[this.TLEFT].enable(false);
+    }
+    
+    if (x != 0) {
+      let twidth = this.triangles[this.TRIGHT].getWidth();
+      this.triangles[this.TRIGHT].enable(true);
+      this.triangles[this.TRIGHT].setPosition(startX + (x * this.buttonWidth) - (this.buttonWidth / 2) + (twidth / 2) + this.strokeWeight, startY + y * this.buttonHeight);
+    }
+    else {
+      this.triangles[this.TRIGHT].enable(false); 
+    }
+    
+    if (y != 3) {
+      let theight = this.triangles[this.TUP].getHeight();
+      this.triangles[this.TUP].enable(true);
+      this.triangles[this.TUP].setPosition(startX + x * this.buttonWidth, startY + (y * this.buttonHeight) + (this.buttonHeight / 2) - (theight / 2) - this.strokeWeight);
+    }
+    else {
+      this.triangles[this.TUP].enable(false); 
+    }
+    
+    if (y != 0) {
+      let theight = this.triangles[this.TDOWN].getHeight();
+      this.triangles[this.TDOWN].enable(true);
+      this.triangles[this.TDOWN].setPosition(startX + x * this.buttonWidth, startY + (y * this.buttonHeight) - (this.buttonHeight / 2) + (theight / 2) + this.strokeWeight);
+    }
+    else {
+      this.triangles[this.TDOWN].enable(false); 
+    }
+  }
+  
+  arrowFunc(arrowType) {
+    let id = this.cells.indexOf(0);
+    let x = floor(id % 4);
+    let y = floor(id / 4);
+    
+    let pos = super.getPosition();
+    let startX = pos.x - 2 * this.buttonWidth + this.buttonWidth / 2;
+    let startY = pos.y - 2 * this.buttonHeight + this.buttonHeight / 2;
+    
+    let xToMove;
+    let yToMove;
+    
+    if (arrowType == this.TUP) {
+      xToMove = x;
+      yToMove = y + 1;
+    }
+    else if (arrowType == this.TRIGHT) {
+      xToMove = x - 1;
+      yToMove = y;
+    }
+    else if (arrowType == this.TDOWN) {
+      xToMove = x;
+      yToMove = y - 1;
+    }
+    else if (arrowType == this.TLEFT) {
+      xToMove = x + 1;
+      yToMove = y;
+    }
+    
+    let idToMove = yToMove * 4 + xToMove;
+    this.cells[id] = this.cells[idToMove];
+    this.cells[idToMove] = 0;
+    this.updateArrows(xToMove, yToMove);
+    
+    // przesunięcie buttona
+    this.cellsButtons[idToMove].setPosition(startX + x * this.buttonWidth, startY + y * this.buttonHeight);
+    let button = this.cellsButtons[idToMove];
+    this.cellsButtons[idToMove] = this.cellsButtons[id];
+    this.cellsButtons[id] = button;
+  }
+  
+  checkBoard() {
+    for (let i = 0; i < 16; i++) {
+      if (this.cells[i] != i) {
+        return false; 
+      }
+    }
+    return true;
   }
   
   draw(drawTarget) {
@@ -70,18 +178,23 @@ class PietnastkaBoard extends GameObject {
     drawTarget.stroke(color(0));
     drawTarget.rect(pos.x, pos.y, this.buttonWidth * 4, this.buttonHeight * 4);
     
-    /*for (let i = 0; i < this.cellsButtons.length; i++) {
+    for (let i = 0; i < this.cellsButtons.length; i++) {
       this.cellsButtons[i].draw(drawTarget);
-    }*/
+    }
     
-    /*for (let i = 0; i < this.triangles.length; i++) {
-      this.triangles[i].draw(drawTarget); 
-    }*/
-    this.triangles[this.TLEFT].draw(drawTarget);
+    for (let i = 0; i < this.triangles.length; i++) {
+      if (this.triangles[i].isEnabled()) {
+        this.triangles[i].draw(drawTarget);
+      }
+    }
     drawTarget.pop();
   }
   
   mouseClicked() {
-    
+    for (let i = 0; i < this.triangles.length; i++) {
+      if (this.triangles[i].isEnabled()) {
+        this.triangles[i].mouseClicked(); 
+      }
+    }
   }
 }
