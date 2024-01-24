@@ -50,8 +50,13 @@ class PietnastkaBoard extends GameObject {
   }
   
   generate() {
-    this.cells = shuffle(this.cells);
+    //this.cells = shuffle(this.cells);
+    this.cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 15];
     
+    this.updateButtons();
+  }
+  
+  updateButtons() {
     this.cellsButtons = [];
     let pos = super.getPosition();
     
@@ -161,7 +166,10 @@ class PietnastkaBoard extends GameObject {
   
   checkBoard() {
     for (let i = 0; i < 16; i++) {
-      if (this.cells[i] != i) {
+      if (i == 15 && this.cells[i] != 0) {
+        return false;
+      }
+      if (i != 15 && this.cells[i] != i + 1) {
         return false; 
       }
     }
@@ -196,5 +204,40 @@ class PietnastkaBoard extends GameObject {
         this.triangles[i].mouseClicked(); 
       }
     }
+  }
+  
+  saveBoard() {
+    for (let i = 0; i < this.cells.length; i++) {
+      localStorage.setItem("Game.Board.Cells[" + i + "]", this.cells[i]);
+    }
+    localStorage.setItem("Game.Board.Exist", true);
+    return true;
+  }
+  
+  loadBoard() {
+    let exists = localStorage.getItem("Game.Board.Exist");
+    if (exists != null) {
+     for (let i = 0; i < this.cells.length; i++) {
+       this.cells[i] = int(localStorage.getItem("Game.Board.Cells[" + i + "]"));
+     }
+     
+     this.updateButtons();
+     return true;
+    }
+    return false;
+  }
+  
+  getJson() {
+    let boardJson = JSON.parse("{}"); 
+    
+    boardJson['Cells'] = this.cells;
+    
+    return boardJson;
+  }
+  
+  loadJson(boardJson) {
+    this.cells = boardJson['Cells'];
+    
+    this.updateButtons();
   }
 }

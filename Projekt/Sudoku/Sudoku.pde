@@ -12,6 +12,7 @@ SCREEN_TYPES currentScreen = SCREEN_TYPES.MENU;
 // MENU
 int highscoreSeconds[] = { 0, 0, 0 };
 int highscoreMinutes[] = { 0, 0, 0 };
+boolean hasHighscore[] = { false, false, false };
 Dropdown levelDropdown;
 TextButton startButton;
 TextButton loadButton;
@@ -164,13 +165,19 @@ void draw() {
     screen.pushMatrix();
     screen.pushStyle();
     
-    int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
-    int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
-    String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    String time = "";
+    if (hasHighscore[levelDropdown.getCurrentOption()]) {
+      int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
+      int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
+      time = "Highscore: " + (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    }
+    else {
+      time = "No Highscore"; 
+    }
     
     screen.textSize(20);
     float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
-    screen.text("Highscore: " + time, screen.width / 2f - screen.textWidth("Highscore: " + time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
+    screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
     
     File f = dataFile("sudoku.json");
     if (f.exists() && f.isFile()) {
@@ -275,7 +282,7 @@ void mouseClicked() {
     backToMenuButton.mouseClicked();
     
     if (board.checkBoard()) {
-       if (highscoreMinutes[levelDropdown.getCurrentOption()] < currentMinutes) {
+       if (highscoreMinutes[levelDropdown.getCurrentOption()] > currentMinutes) {
           highscoreMinutes[levelDropdown.getCurrentOption()] = currentMinutes;
           highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
           
@@ -283,7 +290,16 @@ void mouseClicked() {
           saveHighscoresToJson();
           newRekord = true;
        }
-       else if (highscoreMinutes[levelDropdown.getCurrentOption()] == currentMinutes && highscoreSeconds[levelDropdown.getCurrentOption()] < currentSeconds) {
+       else if (highscoreMinutes[levelDropdown.getCurrentOption()] == currentMinutes && highscoreSeconds[levelDropdown.getCurrentOption()] > currentSeconds) {
+          highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
+          
+          // save highscores
+          saveHighscoresToJson();
+          newRekord = true;
+       }
+       else if (!hasHighscore[levelDropdown.getCurrentOption()]) {
+          hasHighscore[levelDropdown.getCurrentOption()] = true;
+          highscoreMinutes[levelDropdown.getCurrentOption()] = currentMinutes;
           highscoreSeconds[levelDropdown.getCurrentOption()] = currentSeconds;
           
           // save highscores
@@ -341,6 +357,7 @@ void saveHighscoresToJson() {
   JSONArray levelsArray = new JSONArray();
   for (int i = 0; i < highscoreSeconds.length; i++) {
     JSONObject levelJsonObject = new JSONObject();
+    levelJsonObject.setBoolean("HasHighscore", hasHighscore[i]);
     levelJsonObject.setInt("Minutes", highscoreMinutes[i]);
     levelJsonObject.setInt("Seconds", highscoreSeconds[i]);
     
@@ -357,8 +374,10 @@ void loadHighscoresFromJson() {
   
   JSONArray levelsArray = highscoreJson.getJSONArray("Highscores");
   for (int i = 0; i < levelsArray.size(); i++) {
-    highscoreMinutes[i] = levelsArray.getJSONObject(i).getInt("Minutes"); 
-    highscoreSeconds[i] = levelsArray.getJSONObject(i).getInt("Seconds");
+    JSONObject levelJsonObject = levelsArray.getJSONObject(i);
+    hasHighscore[i] = levelJsonObject.getBoolean("HasHighscore");
+    highscoreMinutes[i] = levelJsonObject.getInt("Minutes"); 
+    highscoreSeconds[i] = levelJsonObject.getInt("Seconds");
   }
 }
 

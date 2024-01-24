@@ -1,0 +1,14 @@
+local storage i session storage do zapisywania danych normalnie
+
+możliwość ściągnięcia pliku json z danymi z localStorage i sessionStorage
+
+możliwość zaczytania danych do localStorage i sessionStorage z pliku
+
+highscore w localStorage
+board w localStorage
+
+clearStorage
+
+
+highscore zaczytuje sie na początku załadowania strony jeśli nie było są domyślne wartości zapisywane
+gra zaczytuje się na początku załadowania strony jeśli została jakaś zapisana

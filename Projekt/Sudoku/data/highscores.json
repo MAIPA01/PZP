@@ -1,13 +1,16 @@
 {"Highscores": [
   {
+    "HasHighscore": true,
     "Seconds": 48,
     "Minutes": 0
   },
   {
-    "Seconds": 0,
-    "Minutes": 0
+    "HasHighscore": true,
+    "Seconds": 26,
+    "Minutes": 1
   },
   {
+    "HasHighscore": false,
     "Seconds": 0,
     "Minutes": 0
   }
