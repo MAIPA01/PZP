@@ -4,6 +4,13 @@ class PietnastkaBoard extends GameObject {
     super(x, y);
     this.cells = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     
+    this.animating = false;
+    this.fromPos = createVector();
+    this.deltaPos = createVector();
+    this.buttonID = 0;
+    this.animTime = 0.25;
+    this.currAnimTime = 0;
+    
     this.buttonWidth = 80;
     this.buttonHeight = 80;
     this.strokeWeight = 2;
@@ -50,8 +57,7 @@ class PietnastkaBoard extends GameObject {
   }
   
   generate() {
-    //this.cells = shuffle(this.cells);
-    this.cells = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0, 15];
+    this.cells = shuffle(this.cells);
     
     this.updateButtons();
   }
@@ -158,7 +164,14 @@ class PietnastkaBoard extends GameObject {
     this.updateArrows(xToMove, yToMove);
     
     // przesunięcie buttona
-    this.cellsButtons[idToMove].setPosition(startX + x * this.buttonWidth, startY + y * this.buttonHeight);
+    this.fromPos = this.cellsButtons[idToMove].getPosition();
+    this.deltaPos.x = startX + x * this.buttonWidth - this.fromPos.x;
+    this.deltaPos.y = startY + y * this.buttonHeight - this.fromPos.y;
+    this.buttonID = id;
+    this.animating = true;
+    this.currAnimTime = 0;
+    
+    //this.cellsButtons[idToMove].setPosition(startX + x * this.buttonWidth, startY + y * this.buttonHeight);
     let button = this.cellsButtons[idToMove];
     this.cellsButtons[idToMove] = this.cellsButtons[id];
     this.cellsButtons[id] = button;
@@ -176,6 +189,10 @@ class PietnastkaBoard extends GameObject {
     return true;
   }
   
+  isAnimating() {
+    return this.animating;
+  }
+  
   draw(drawTarget) {
     drawTarget.push();
     
@@ -186,22 +203,47 @@ class PietnastkaBoard extends GameObject {
     drawTarget.stroke(color(0));
     drawTarget.rect(pos.x, pos.y, this.buttonWidth * 4, this.buttonHeight * 4);
     
+    if (this.animating) {
+      if (getFrameRate() != 0) {
+        this.currAnimTime += 1 / getFrameRate();
+      }
+      
+      let posX, posY;
+      if (this.currAnimTime < this.animTime) {
+        posX = this.fromPos.x;
+        posY = this.fromPos.y;
+        posX += (this.currAnimTime * this.deltaPos.x) / this.animTime;
+        posY += (this.currAnimTime * this.deltaPos.y) / this.animTime;
+      }
+      else {
+        this.animating = false;
+        posX = this.fromPos.x + this.deltaPos.x;
+        posY = this.fromPos.y + this.deltaPos.y;
+      }
+      
+      this.cellsButtons[this.buttonID].setPosition(posX, posY);
+    }
+    
     for (let i = 0; i < this.cellsButtons.length; i++) {
       this.cellsButtons[i].draw(drawTarget);
     }
     
-    for (let i = 0; i < this.triangles.length; i++) {
-      if (this.triangles[i].isEnabled()) {
-        this.triangles[i].draw(drawTarget);
+    if (!this.animating) {
+      for (let i = 0; i < this.triangles.length; i++) {
+        if (this.triangles[i].isEnabled()) {
+          this.triangles[i].draw(drawTarget);
+        }
       }
     }
     drawTarget.pop();
   }
   
   mouseClicked() {
-    for (let i = 0; i < this.triangles.length; i++) {
-      if (this.triangles[i].isEnabled()) {
-        this.triangles[i].mouseClicked(); 
+    if (!this.animating) {
+      for (let i = 0; i < this.triangles.length; i++) {
+        if (this.triangles[i].isEnabled()) {
+          this.triangles[i].mouseClicked(); 
+        }
       }
     }
   }

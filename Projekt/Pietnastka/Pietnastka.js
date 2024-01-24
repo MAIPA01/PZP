@@ -194,7 +194,7 @@ function draw() {
   // CENTER
   if (started) {
     if (!ended) {
-      if (getFrameRate() != 0) {
+      if (getFrameRate() != 0 && !board.isAnimating()) {
         currentMiliseconds += int(1000 / getFrameRate());
         if (currentMiliseconds >= 1000) {
           currentSeconds += int(currentMiliseconds / 1000);
@@ -312,10 +312,10 @@ function mouseClicked() {
       newHighscoreText.enable(true);
       
       if (saveHighscore()) {
-        console.log("NEW HIGHSCORE SAVED"); 
+        console.log("NEW HIGHSCORE SAVED");
       }
       else {
-        console.log("CAN'T SAVE NEW HIGHSCORE"); 
+        console.log("CAN'T SAVE NEW HIGHSCORE");
       }
     }
     else if (!hasHighscore) {
