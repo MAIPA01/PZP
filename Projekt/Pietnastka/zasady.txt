@@ -12,3 +12,15 @@ clearStorage
 
 highscore zaczytuje sie na początku załadowania strony jeśli nie było są domyślne wartości zapisywane
 gra zaczytuje się na początku załadowania strony jeśli została jakaś zapisana
+
+można wyczyścić dane
+
+można zapisać plik z zapisanym highscorem
+można zapisać plik z zapisaną grą
+
+można wymusić zapis gry
+
+można zaczytać grę z pliku
+można zaczytać highscore z pliku
+
+można wymusić zaczytanie ostatniej gry
