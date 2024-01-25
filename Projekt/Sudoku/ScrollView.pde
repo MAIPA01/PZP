@@ -22,6 +22,8 @@ public class ScrollView extends GameObject {
   private boolean _scrollDrag = false;
   private boolean _isDragging = false;
   
+   private boolean _touchStarted = false;
+  
   public ScrollView(int w, int h, float minY, float maxY) {
    this(0, 0, w, h, minY, maxY); 
   }
@@ -80,10 +82,12 @@ public class ScrollView extends GameObject {
     _scrollHeight = (_viewMask.height / (_maxY - _minY)) * _viewMask.height;
   }
   
+  @Override
   public void setPosition(float x, float y) {
     this.setPosition(new PVector(x, y));
   }
   
+  @Override
   public void setPosition(PVector pos) {
     PVector lpos = getPosition();
     super.setPosition(pos);
@@ -136,6 +140,7 @@ public class ScrollView extends GameObject {
      return _scrollEnable;
   }
   
+  @Override
   public void draw(PGraphics drawTarget) {
    drawTarget.pushMatrix();
    drawTarget.pushStyle();
@@ -181,42 +186,63 @@ public class ScrollView extends GameObject {
    drawTarget.popMatrix();
   }
   
-  boolean isInViewMask(float x, float y) {
+  boolean isInViewMask(float x, float y, float area) {
     PVector pos = getPosition();
     return x >= pos.x - _viewMask.width / 2f && x <= pos.x + _viewMask.width / 2f && y >= pos.y - _viewMask.height / 2f && y <= pos.y + _viewMask.height / 2f;
   }
   
-  boolean isInScroll(float x, float y) {
+  boolean isInScroll(float x, float y, float area) {
     PVector pos = getPosition();
     float scrollPosY = map(_currScrollY, _minY, _maxY, _scrollHeight / 2f, _viewMask.height - _scrollHeight / 2f);
     return x >= pos.x + _viewMask.width / 2f - _scrollWidth && x <= pos.x + _viewMask.width / 2f && y >= pos.y - _viewMask.height / 2f + scrollPosY - _scrollHeight / 2f && y <= pos.y - _viewMask.height / 2f + scrollPosY + _scrollHeight / 2f;
   }
-  
-  public void mouseClicked() {
-   if (mouseButton == LEFT && isInViewMask(mouseX, mouseY)) {
-        for (int i = 0; i < _objects.size(); i++) {
-          _objects.get(i).mouseClicked();
+
+  @Override
+  public void touchStarted() {
+   if (!_touchStarted) {
+      for (int i = 0; i < touches.length; i++) {
+        if (touches[i].id == 0) {
+          _touchStarted = true;
+          _canDrag = isInViewMask(touches[i].x, touches[i].y, touches[i].area);
+          _scrollDrag = _scrollEnable && isInScroll(touches[i].x, touches[i].y, touches[i].area);
+          
+          if (_canDrag && !_scrollDrag) {
+            for (int j = 0; j < _objects.size(); j++) {
+              _objects.get(j).touchStarted();
+            }
+          }
         }
-   }
-  }
-  
-  public void mousePressed() {
-    if (mouseButton == LEFT && isInViewMask(mouseX, mouseY)) {
-     _canDrag = true;
-     if (_scrollEnable && isInScroll(mouseX, mouseY)) {
-       _scrollDrag = true; 
-     }
+      }
     }
   }
   
-  public void mouseReleased() {    
-    _canDrag = false;
-    _scrollDrag = false;
-    _isDragging = false;
+  @Override
+  public void touchEnded() {
+    if (_touchStarted) {
+        boolean found = false;
+        for (int i = 0; i < touches.length; i++) {
+          if (touches[i].id == 0) {
+            found = true;
+          }
+        }
+        
+        if (!found) {
+          if (_canDrag && !_scrollDrag) {
+            for (int j = 0; j < _objects.size(); j++) {
+              _objects.get(j).touchEnded(); 
+            }
+          }
+          _touchStarted = false;
+          _canDrag = false;
+          _scrollDrag = false;
+          _isDragging = false;
+        }
+     }
   }
   
-  public void mouseDragged() {
-     if (_canDrag) {
+  @Override
+  public void touchMoved() {
+     if (_touchStarted && _canDrag) {
        _isDragging = true;
        
        if (_maxY > _minY + _viewMask.height) {

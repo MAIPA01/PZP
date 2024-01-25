@@ -1,0 +1,7 @@
+dla przycisku i scroll view:
+- touch started
+- touch ended
+- licznik jeżeli powyżej iluś sekund to znaczy że przytrzymuje
+- przy hitboxach uwzględniać nie tylko pozycje x, y a area czyli sprawdzać czy jest kolizja okręgu z prostokątem
+
+mnożyć wielkości tekstu itp. jak i obrazków przez displayDensity

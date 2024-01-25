@@ -40,19 +40,15 @@ public class GameObject {
     
   }
   
-  public void mouseClicked() {
+  public void touchStarted() {
     
   }
   
-  public void mousePressed() {
+  public void touchMoved() {
     
   }
   
-  public void mouseReleased() {
-    
-  }
-  
-  public void mouseDragged() {
+  public void touchEnded() {
     
   }
 }

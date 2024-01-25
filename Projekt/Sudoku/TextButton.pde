@@ -7,6 +7,7 @@ public class TextButton extends Button {
    _text.setColor(color(0));
   }
   
+  @Override
   public void draw(PGraphics drawTarget) {
     super.draw(drawTarget);
     
@@ -27,10 +28,16 @@ public class TextButton extends Button {
     _text.setColor(textColor);
   }
   
+  public void setTextSize(float size) {
+    _text.setTextSize(size); 
+  }
+  
+  @Override
   public void setPosition(float x, float y) {
     this.setPosition(new PVector(x, y));
   }
   
+  @Override
   public void setPosition(PVector pos) {
     super.setPosition(pos);
     _text.setPosition(pos);

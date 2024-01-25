@@ -1,15 +1,16 @@
-public interface DisplayFunction {
+public interface DrawFunction {
    public void Invoke(QuickObject ref, PGraphics drawTarget);
 }
 
 public class QuickObject extends GameObject {
-   public DisplayFunction _displayFunc;
+   public DrawFunction _displayFunc;
    
-   public QuickObject(float x, float y, DisplayFunction func) {
+   public QuickObject(float x, float y, DrawFunction func) {
     super(x, y);
     _displayFunc = func;
    }
    
+   @Override
    public void draw(PGraphics drawTarget) {
      drawTarget.pushMatrix();
      drawTarget.pushStyle();

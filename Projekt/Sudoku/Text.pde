@@ -32,6 +32,7 @@ class Text extends GameObject {
     _textAlign = align;
   }
   
+  @Override
   public void draw(PGraphics drawTarget) {
     drawTarget.pushMatrix();
     drawTarget.pushStyle();

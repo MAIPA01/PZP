@@ -15,10 +15,11 @@ public class Dropdown extends GameObject {
  public Dropdown(float x, float y, int w, float btnH, int svH) {
     super(x, y);
     _btn = new TextButton("Choose Option", x, y, w, btnH);
-    _btn.addAction(() -> {
-      if (mouseButton == LEFT) {
-        _svIsVisible = !_svIsVisible;
-      }
+    _btn.addAction(new ButtonAction() {
+       @Override
+       public void Invoke() {
+          _svIsVisible = !_svIsVisible;
+        }
     });
     
     _sv = new ScrollView(x, y + svH / 2f + btnH / 2f, w, svH, 0, svH);
@@ -29,27 +30,33 @@ public class Dropdown extends GameObject {
     
     _options = new LinkedHashMap<String, TextButton>();
     
-    _triangle = new QuickObject(0, 0, (QuickObject ref, PGraphics drawLayer) -> {
-       drawLayer.fill(0);
-       drawLayer.noStroke();
-       
-       // triangle
-       drawLayer.triangle(0.f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f);
-       
-       drawLayer.endShape(CLOSE);
+    _triangle = new QuickObject(0, 0, new DrawFunction() {
+         @Override
+         public void Invoke(QuickObject ref, PGraphics drawLayer) {
+         drawLayer.fill(0);
+         drawLayer.noStroke();
+         
+         // triangle
+         drawLayer.triangle(0.f, 0.5f, 0.5f, -0.5f, -0.5f, -0.5f);
+         
+         drawLayer.endShape(CLOSE);
+         }
      });
  }
  
+ @Override
   public void setPosition(float x, float y) {
     this.setPosition(new PVector(x, y));
   }
   
+  @Override
   public void setPosition(PVector pos) {
     super.setPosition(pos);
     _btn.setPosition(pos);
     _sv.setPosition(pos.x, pos.y + _sv.getViewHeight() / 2f + _btn.getHeight() / 2f);
   }
  
+ @Override
  public void draw(PGraphics drawTarget) {
     drawTarget.pushMatrix();
     drawTarget.pushStyle();
@@ -61,7 +68,7 @@ public class Dropdown extends GameObject {
       // draw triangle up
       drawTarget.pushMatrix();
       drawTarget.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
-      drawTarget.scale(10);
+      drawTarget.scale(10 * displayDensity);
       drawTarget.rotate(radians(180));
       _triangle.draw(drawTarget);
       drawTarget.popMatrix();
@@ -70,7 +77,7 @@ public class Dropdown extends GameObject {
       // draw triangle down
       drawTarget.pushMatrix();
       drawTarget.translate(getPosition().x + _btn.getWidth() / 2f - 10f, getPosition().y);
-      drawTarget.scale(10);
+      drawTarget.scale(10 * displayDensity);
       _triangle.draw(drawTarget);
       drawTarget.popMatrix();
     }
@@ -79,43 +86,60 @@ public class Dropdown extends GameObject {
     drawTarget.popMatrix();
  }
  
- public void mouseClicked() {
-   _btn.mouseClicked();
-   if (_svIsVisible) _sv.mouseClicked();
+ @Override
+ public void touchStarted() {
+   _btn.touchStarted();
+   if (_svIsVisible) _sv.touchStarted();
  }
  
- public void mousePressed() {
-   if (_svIsVisible) _sv.mousePressed();
+ @Override
+ public void touchEnded() {
+   _btn.touchEnded();
+   if (_svIsVisible) _sv.touchEnded();
  }
  
- public void mouseReleased() {
-   if (_svIsVisible) _sv.mouseReleased();
+ @Override
+ public void touchMoved() {
+   if (_svIsVisible) _sv.touchMoved();
  }
  
- public void mouseDragged() {
-   if (_svIsVisible) _sv.mouseDragged();
+ public void setScrollWidth(float sw) {
+   _sv.setScrollWidth(sw);
+ }
+ 
+ public void setTextSize(float size) {
+    _btn.setTextSize(size);
+    for (int i = 0; i < _options.size(); i++) {
+      ((TextButton)_options.values().toArray()[i]).setTextSize(size);
+    }
  }
  
  public void addOption(String name) {
    if (!_options.containsKey(name)) {
      PVector pos = getPosition();
      
+     float spacing = 5 * displayDensity;
+     
      // Dot
-     float dotRadius = 10f;
-     QuickObject dot = new QuickObject(pos.x - (_btn.getWidth() / 2f) + dotRadius, pos.y + (_btn.getHeight() + 5) * (_options.size() + 1), (QuickObject ref, PGraphics drawLayer) -> {
-       drawLayer.rectMode(CENTER);
-       drawLayer.fill(0);
-       drawLayer.noStroke();
-       drawLayer.circle(ref.getPosition().x, ref.getPosition().y, dotRadius);
+     float dotRadius = 10f * displayDensity;
+     QuickObject dot = new QuickObject(pos.x - (_btn.getWidth() / 2f) + dotRadius, pos.y + (_btn.getHeight() + spacing) * (_options.size() + 1) + spacing, new DrawFunction() {
+       @Override
+       public void Invoke(QuickObject ref, PGraphics drawLayer) {
+         drawLayer.rectMode(CENTER);
+         drawLayer.fill(0);
+         drawLayer.noStroke();
+         drawLayer.circle(ref.getPosition().x, ref.getPosition().y, dotRadius);
+       }
      });
      dot.enable(false);
      _sv.addObject(dot);
      
      // Option Button
-     TextButton opt = new TextButton(name, pos.x + dotRadius - 2.5f, pos.y + (_btn.getHeight() + 5) * (_options.size() + 1), _btn.getWidth() - 5f - 2f * dotRadius, _btn.getHeight());
+     TextButton opt = new TextButton(name, pos.x + dotRadius - spacing / 2f, pos.y + (_btn.getHeight() + spacing) * (_options.size() + 1) + spacing, _btn.getWidth() - spacing - 2f * dotRadius, _btn.getHeight());
      final int optNum = _options.size();
-     opt.addAction(() -> {
-       if (mouseButton == LEFT) {
+     opt.addAction(new ButtonAction() {
+       @Override
+       public void Invoke() {
          // Option
          _currentOpt = optNum;
          
@@ -131,14 +155,14 @@ public class Dropdown extends GameObject {
      _sv.addObject(opt);
      _options.put(name, opt);
      
-     if ((_btn.getHeight() + 5) * _options.size() + 5 > _sv.getScrollHeight()) {
-       _sv.setMaxY((_btn.getHeight() + 5) * _options.size() + 5); 
+     if ((_btn.getHeight() + spacing) * _options.size() + spacing > _sv.getScrollHeight()) {
+       _sv.setMaxY((_btn.getHeight() + spacing) * _options.size() + spacing); 
      }
      
      if (_sv.getScrollHeight() < _sv.getViewHeight() && !_sv.isScrollEnable()) {
       _sv.enableScroll(true);
       
-      for (var _opt : _options.values()) {
+      for (TextButton _opt : _options.values()) {
          _opt.setWidth(_opt.getWidth() - _sv.getScrollWidth());
          PVector _optPos = _opt.getPosition();
          _opt.setPosition(_optPos.x - _sv.getScrollWidth() / 2f, _optPos.y);
@@ -154,19 +178,13 @@ public class Dropdown extends GameObject {
  
  public void setCurrentOption(String optName) {
    if (_options.containsKey(optName)) {
-     int lastMB = mouseButton;
-     mouseButton = LEFT;
      _options.get(optName).Invoke();
-     mouseButton = lastMB;
    }
  }
  
  public void setCurrentOption(int optIndex) {
    if (optIndex < 0 || optIndex >= _options.size()) return;
-   int lastMB = mouseButton;
-   mouseButton = LEFT;
    ((TextButton)_options.values().toArray()[optIndex]).Invoke();
-   mouseButton = lastMB;
  }
  
  public int getCurrentOption() {

@@ -2,6 +2,10 @@ public interface ButtonAction {
  void Invoke(); 
 }
 
+public float clamp(float x, float min, float max) {
+  return x > max ? max : (x < min ? min : x); 
+}
+
 public class Button extends GameObject {
  private float _w, _h;
  private color _color;
@@ -9,6 +13,11 @@ public class Button extends GameObject {
  private float _strokeWeight;
  private color _strokeColor;
  private ArrayList<ButtonAction> _actions = new ArrayList<ButtonAction>();
+ 
+ private float _touchMaxHoldTime = 1;
+ private float _touchHoldTimer = 0;
+ private boolean _touchStarted = false;
+ private boolean _touchStartedInside = false;
  
  Button(PVector pos, float w, float h) {
    this(pos.x, pos.y, w, h);
@@ -42,9 +51,14 @@ public class Button extends GameObject {
    }
  }
  
+ @Override
  public void draw(PGraphics drawTarget) {
     drawTarget.pushMatrix();
     drawTarget.pushStyle();
+    
+    if (_touchStarted) {
+       _touchHoldTimer -= 1f / frameRate;
+    }
     
     drawTarget.rectMode(CENTER);
     if (_hasStroke) {
@@ -63,14 +77,45 @@ public class Button extends GameObject {
     drawTarget.popMatrix();
  }
  
- public boolean isInside(float x, float y) {
+ public boolean isInside(float x, float y, float area) {
    PVector pos = getPosition();
-  return x >= pos.x - _w / 2f && x <= pos.x + _w / 2f && y >= pos.y - _h / 2f && y <= pos.y + _h / 2f;
+   float nearestX = clamp(x, pos.x - _w / 2f, pos.x + _w / 2f);
+   float nearestY = clamp(y, pos.y - _h / 2f, pos.y + _h / 2f);
+   return pow(nearestX - x, 2) + pow(nearestY - y, 2) < area;
  }
  
- public void mouseClicked() {
-   if (isInside(mouseX, mouseY)) {
-     Invoke();
+ @Override
+ public void touchStarted() {
+   if (!_touchStarted) {
+    for (int i = 0; i < touches.length; i++) {
+      if (touches[i].id == 0) {
+        _touchStartedInside = isInside(touches[i].x, touches[i].y, touches[i].area);
+        if (_touchStartedInside) {
+          _touchStarted = true;
+          _touchHoldTimer = _touchMaxHoldTime;
+        }
+      }
+    }
+  }
+ }
+ 
+ @Override
+ public void touchEnded() {
+   if (_touchStarted && _touchStartedInside) {
+      boolean found = false;
+      for (int i = 0; i < touches.length; i++) {
+        if (touches[i].id == 0) {
+          found = true;
+        }
+      }
+      
+      if (!found) {
+        if (_touchHoldTimer >= 0) {
+          Invoke();
+        }
+        _touchStarted = false;
+        _touchStartedInside = false;
+      }
    }
  }
  
@@ -95,7 +140,7 @@ public class Button extends GameObject {
  }
  
  public float getWidth() {
-  return _w; 
+  return _w;
  }
  
  public void setWidth(float w) {

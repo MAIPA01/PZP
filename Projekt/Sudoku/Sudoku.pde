@@ -10,9 +10,11 @@ enum SCREEN_TYPES {
 SCREEN_TYPES currentScreen = SCREEN_TYPES.MENU;
 
 // MENU
+Text titleText;
 int highscoreSeconds[] = { 0, 0, 0 };
 int highscoreMinutes[] = { 0, 0, 0 };
 boolean hasHighscore[] = { false, false, false };
+Text highscoreText;
 Dropdown levelDropdown;
 TextButton startButton;
 TextButton loadButton;
@@ -26,18 +28,23 @@ SudokuBoard board;
 int currentMiliseconds = 0;
 int currentSeconds = 0;
 int currentMinutes = 0;
+Text timeText;
 
 // END
+Text endText;
+Text newHighscoreText;
+Text endTimeText;
 TextButton returnToMenuButton;
 boolean newRekord = false;
 
 void setup() {
- size(400, 400);
+ orientation(PORTRAIT);
+ fullScreen();
  
  screen = createGraphics(width, height);
  
  // LOAD HIGHSCORES
- File f = dataFile("highscores.json");
+ File f = dataFile(".\\data\\highscores.json");
  if (f.exists() && f.isFile()) {
    loadHighscoresFromJson();
  }
@@ -46,41 +53,53 @@ void setup() {
  }
  
  // MENU
- levelDropdown = new Dropdown(width / 2f, height / 2f - 70f, 200, 25, 100);
+ titleText = new Text(width / 2f, height / 2f - 350f * displayDensity, "SUDOKU");
+ titleText.setTextSize(75f * displayDensity);
+ 
+ levelDropdown = new Dropdown(width / 2f, height / 2f - 150f * displayDensity, int(200 * displayDensity), int(50 * displayDensity), int(200 * displayDensity));
  levelDropdown.addOption("EASY");
  levelDropdown.addOption("MEDIUM");
  levelDropdown.addOption("HARD");
  levelDropdown.setCurrentOption(0);
+ levelDropdown.setTextSize(20f * displayDensity);
+ levelDropdown.setScrollWidth(20f * displayDensity);
  
- startButton = new TextButton("START", width / 2f, height / 2f - 40f, 200, 25);
- startButton.addAction(() -> {
-   if (mouseButton == LEFT) {
+ highscoreText = new Text(width / 2f, height / 2f - 75f * displayDensity, "No Highscore");
+ highscoreText.setTextSize(20f * displayDensity);
+ 
+ startButton = new TextButton("START", width / 2f, height / 2f, 200 * displayDensity, 50 * displayDensity);
+ startButton.setTextSize(20f * displayDensity);
+ startButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
      if (levelDropdown.getCurrentOption() == 0)
-       board.generateLevel(SUDOKU_LEVEL.EASY);
-     else if (levelDropdown.getCurrentOption() == 1)
-       board.generateLevel(SUDOKU_LEVEL.MEDIUM);
-     else if (levelDropdown.getCurrentOption() == 2)
-       board.generateLevel(SUDOKU_LEVEL.HARD);
-     
-     board.setChoosed(0);
-     for (int i = 0; i < 9; i++) {
-      numberButtons[i].setColor(color(255));
-      numberButtons[i].setHasStroke(false);  
-      numberButtons[i].setTextColor(color(0));
+         board.generateLevel(SUDOKU_LEVEL.EASY);
+       else if (levelDropdown.getCurrentOption() == 1)
+         board.generateLevel(SUDOKU_LEVEL.MEDIUM);
+       else if (levelDropdown.getCurrentOption() == 2)
+         board.generateLevel(SUDOKU_LEVEL.HARD);
+       
+       board.setChoosed(0);
+       for (int i = 0; i < 9; i++) {
+        numberButtons[i].setColor(color(255));
+        numberButtons[i].setHasStroke(false);  
+        numberButtons[i].setTextColor(color(0));
+       }
+       
+       currentMiliseconds = 0;
+       currentSeconds = 0;
+       currentMinutes = 0;
+       
+       currentScreen = SCREEN_TYPES.GAME;
      }
-     
-     currentMiliseconds = 0;
-     currentSeconds = 0;
-     currentMinutes = 0;
-     
-     currentScreen = SCREEN_TYPES.GAME;
-   }
  });
  
- loadButton = new TextButton("LOAD", width / 2f, height / 2f - 10f, 200, 25);
- loadButton.addAction(() -> {
-   if (mouseButton == LEFT) {
-    File json = dataFile("sudoku.json");
+ loadButton = new TextButton("LOAD", width / 2f, height / 2f + 75f * displayDensity, 200 * displayDensity, 50 * displayDensity);
+ loadButton.setTextSize(20f * displayDensity);
+ loadButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
+    File json = dataFile(".\\data\\sudoku.json");
     if (json.exists() && json.isFile()) {
       // load sudoku board
      loadSudokuBoardFromJson();
@@ -97,60 +116,87 @@ void setup() {
    }
  });
  
- exitButton = new TextButton("EXIT", width / 2f, height / 2f + 20f, 200, 25);
- exitButton.addAction(() -> {
-   if (mouseButton == LEFT) {
-    exit(); 
+ exitButton = new TextButton("EXIT", width / 2f, height / 2f + 150f * displayDensity, 200 * displayDensity, 50 * displayDensity);
+ exitButton.setTextSize(20f * displayDensity);
+ exitButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
+     exit(); 
    }
  });
  
  // GAME
  board = new SudokuBoard();
  
- float buttonSize = 400 / (9 + 5);
+ timeText = new Text(width / 2f, 25f * displayDensity, "00:00");
+ timeText.setTextSize(20f * displayDensity);
+ 
+ float buttonSize = width / (9f + 10f * 0.5f);
+ float spacingSize = buttonSize * 0.5f;
  for (int i = 0; i < 9; i++) {
-   numberButtons[i] = new TextButton("" + (i + 1), buttonSize + i * (buttonSize + buttonSize / 2f), height - buttonSize - buttonSize / 2f + 10f, buttonSize, buttonSize);
+   numberButtons[i] = new TextButton("" + (i + 1), (i + 1) * spacingSize + i * buttonSize + spacingSize, height - 4 * buttonSize, buttonSize, buttonSize);
    numberButtons[i].setStrokeWeight(2);
    numberButtons[i].setStrokeColor(color(0));
+   numberButtons[i].setTextSize(20f * displayDensity);
    
    final int index = i + 1;
-   numberButtons[i].addAction(() -> {
-     board.setChoosed(index);
-     
-     // Highlight Disable
-     for (int i2 = 0; i2 < 9; i2++) {
-      numberButtons[i2].setColor(color(255));
-      numberButtons[i2].setHasStroke(false);
-      numberButtons[i2].setTextColor(color(0));
+   numberButtons[i].addAction(new ButtonAction() {
+     @Override
+     public void Invoke() {
+       board.setChoosed(index);
+       
+       // Highlight Disable
+       for (int i2 = 0; i2 < 9; i2++) {
+        numberButtons[i2].setColor(color(255));
+        numberButtons[i2].setHasStroke(false);
+        numberButtons[i2].setTextColor(color(0));
+       }
+       
+       // Highlight Enable
+       numberButtons[index - 1].setColor(color(200));
+       numberButtons[index - 1].setHasStroke(true);
+       numberButtons[index - 1].setTextColor(color(255, 0, 0));
      }
-     
-     // Highlight Enable
-     numberButtons[index - 1].setColor(color(200));
-     numberButtons[index - 1].setHasStroke(true);
-     numberButtons[index - 1].setTextColor(color(255, 0, 0));
    });
  }
  
- saveButton = new TextButton("SAVE", width - 55, 25, 100, 25);
- saveButton.addAction(() -> {
-   if (mouseButton == LEFT) {
+ saveButton = new TextButton("SAVE", width - 55f * displayDensity, 25f * displayDensity, int(100 * displayDensity), int(25 * displayDensity));
+ saveButton.setTextSize(20 * displayDensity);
+ saveButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
      // save sudoku board
      saveSudokuBoardToJson();
      println("Saved");
    }
  });
  
- backToMenuButton = new TextButton("BACK", 55, 25, 100, 25);
- backToMenuButton.addAction(() -> {
-   if (mouseButton == LEFT) {
+ backToMenuButton = new TextButton("BACK", 55f * displayDensity, 25f * displayDensity, int(100 * displayDensity), int(25 * displayDensity));
+ backToMenuButton.setTextSize(20f * displayDensity);
+ backToMenuButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
      currentScreen = SCREEN_TYPES.MENU;
    }
  });
  
  // END
- returnToMenuButton = new TextButton("RETURN TO MENU", width / 2f, height / 2f + 55, 200, 25);
- returnToMenuButton.addAction(() -> {
-   if (mouseButton == LEFT) {
+ endText = new Text(width / 2f, 60f * displayDensity, "The End");
+ endText.setTextSize(40 * displayDensity);
+ endText.setColor(color(255));
+ 
+ newHighscoreText = new Text(width / 2f, 120f * displayDensity, "New Highscore");
+ newHighscoreText.setTextSize(20f * displayDensity);
+ newHighscoreText.setColor(color(255, 0, 0));
+ 
+ endTimeText = new Text(width / 2f, 150f * displayDensity, "00:00");
+ endTimeText.setTextSize(20f * displayDensity);
+ 
+ returnToMenuButton = new TextButton("RETURN TO MENU", width / 2f, height / 2f + 55f * displayDensity, int(200 * displayDensity), int(50 * displayDensity));
+ returnToMenuButton.setTextSize(20f * displayDensity);
+ returnToMenuButton.addAction(new ButtonAction() {
+   @Override
+   public void Invoke() {
      newRekord = false;
      currentScreen = SCREEN_TYPES.MENU;
    }
@@ -165,6 +211,8 @@ void draw() {
     screen.pushMatrix();
     screen.pushStyle();
     
+    titleText.draw(screen);
+    
     String time = "";
     if (hasHighscore[levelDropdown.getCurrentOption()]) {
       int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
@@ -175,11 +223,10 @@ void draw() {
       time = "No Highscore"; 
     }
     
-    screen.textSize(20);
-    float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
-    screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, screen.height / 2f - 100f + textHeight / 2f);
+    highscoreText.setText(time);
+    highscoreText.draw(screen);
     
-    File f = dataFile("sudoku.json");
+    File f = dataFile(".\\data\\sudoku.json");
     if (f.exists() && f.isFile()) {
       loadButton.setColor(color(255));
     }
@@ -216,12 +263,12 @@ void draw() {
     saveButton.draw(screen);
     backToMenuButton.draw(screen);
     
-    screen.textSize(20);
-    float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
     int minutes = currentMinutes;
     int seconds = currentSeconds;
     String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-    screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 25 + textHeight / 2f);
+    
+    timeText.setText(time);
+    timeText.draw(screen);
     
     screen.popStyle();
     screen.popMatrix();
@@ -230,30 +277,18 @@ void draw() {
     screen.pushMatrix();
     screen.pushStyle();
     
-    screen.fill(255);
-    screen.textSize(40);
-    float textHeight = (screen.textAscent() + screen.textDescent()) * 0.75f;
-    screen.text("The End", screen.width / 2f - screen.textWidth("The End") / 2f, 60 + textHeight / 2f);
+    endText.draw(screen);
     
     if (newRekord) {
-      screen.fill(255, 0, 0);
-      screen.text("New Highscore", screen.width / 2f - screen.textWidth("New Highscore") / 2f, 120 + textHeight / 2f);
-      
-      screen.textSize(20);
-      int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
-      int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
-      String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-      screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 150 + textHeight / 2f);
-    }
-    else {
-      screen.textSize(20);
-      int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
-      int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
-      String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-      screen.text(time, screen.width / 2f - screen.textWidth(time) / 2f, 150 + textHeight / 2f);
+      newHighscoreText.draw(screen);
     }
     
-    screen.textSize(20);
+    int minutes = highscoreMinutes[levelDropdown.getCurrentOption()];
+    int seconds = highscoreSeconds[levelDropdown.getCurrentOption()];
+    String time = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    endTimeText.setText(time);
+    endTimeText.draw(screen);
+    
     returnToMenuButton.draw(screen);
     
     screen.popStyle();
@@ -264,22 +299,56 @@ void draw() {
   image(screen, 0, 0);
 }
 
-void mouseClicked() {
+void touchStarted() {
   if (currentScreen == SCREEN_TYPES.MENU) {
-    levelDropdown.mouseClicked();
+    levelDropdown.touchStarted();
     if (!levelDropdown.areOptionsVisible()) {
-      startButton.mouseClicked();
-      loadButton.mouseClicked();
-      exitButton.mouseClicked();
+      startButton.touchStarted();
+      loadButton.touchStarted();
+      exitButton.touchStarted();
     }
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
-    board.mouseClicked();
+    board.touchStarted();
     for (int i = 0; i < 9; i++) {
-     numberButtons[i].mouseClicked();
+     numberButtons[i].touchStarted();
     }
-    saveButton.mouseClicked();
-    backToMenuButton.mouseClicked();
+    saveButton.touchStarted();
+    backToMenuButton.touchStarted();
+  }
+  else if (currentScreen == SCREEN_TYPES.END) {
+    returnToMenuButton.touchStarted();
+  }
+}
+
+void touchMoved() {
+  if (currentScreen == SCREEN_TYPES.MENU) {
+    levelDropdown.touchMoved();
+  }
+  else if (currentScreen == SCREEN_TYPES.GAME) {
+    
+  }
+  else if (currentScreen == SCREEN_TYPES.END) {
+    
+  }
+}
+
+void touchEnded() {
+  if (currentScreen == SCREEN_TYPES.MENU) {
+    levelDropdown.touchEnded();
+    if (!levelDropdown.areOptionsVisible()) {
+      startButton.touchEnded();
+      loadButton.touchEnded();
+      exitButton.touchEnded();
+    }
+  }
+  else if (currentScreen == SCREEN_TYPES.GAME) {
+    board.touchEnded();
+    for (int i = 0; i < 9; i++) {
+     numberButtons[i].touchEnded();
+    }
+    saveButton.touchEnded();
+    backToMenuButton.touchEnded();
     
     if (board.checkBoard()) {
        if (highscoreMinutes[levelDropdown.getCurrentOption()] > currentMinutes) {
@@ -311,43 +380,7 @@ void mouseClicked() {
     }
   }
   else if (currentScreen == SCREEN_TYPES.END) {
-    returnToMenuButton.mouseClicked();
-  }
-}
-
-void mousePressed() {
-  if (currentScreen == SCREEN_TYPES.MENU) {
-    levelDropdown.mousePressed();
-  }
-  else if (currentScreen == SCREEN_TYPES.GAME) {    
-    
-  }
-  else if (currentScreen == SCREEN_TYPES.END) {
-    
-  }
-}
-
-void mouseReleased() {
-  if (currentScreen == SCREEN_TYPES.MENU) {
-    levelDropdown.mouseReleased();
-  }
-  else if (currentScreen == SCREEN_TYPES.GAME) {
-    
-  }
-  else if (currentScreen == SCREEN_TYPES.END) {
-    
-  }
-}
-
-void mouseDragged() {
-  if (currentScreen == SCREEN_TYPES.MENU) {
-    levelDropdown.mouseDragged();
-  }
-  else if (currentScreen == SCREEN_TYPES.GAME) {
-    
-  }
-  else if (currentScreen == SCREEN_TYPES.END) {
-    
+    returnToMenuButton.touchEnded();
   }
 }
 
@@ -366,11 +399,11 @@ void saveHighscoresToJson() {
   
   highscoreJson.setJSONArray("Highscores", levelsArray);
   
-  saveJSONObject(highscoreJson, "./data/highscores.json");
+  saveJSONObject(highscoreJson, ".\\data\\highscores.json");
 }
 
 void loadHighscoresFromJson() {
-  JSONObject highscoreJson = loadJSONObject("./data/highscores.json");
+  JSONObject highscoreJson = loadJSONObject(".\\data\\highscores.json");
   
   JSONArray levelsArray = highscoreJson.getJSONArray("Highscores");
   for (int i = 0; i < levelsArray.size(); i++) {
@@ -394,11 +427,11 @@ void saveSudokuBoardToJson() {
  
  sudokuJson.setJSONObject("Board", board.getJSONObject());
  
- saveJSONObject(sudokuJson, "./data/sudoku.json");
+ saveJSONObject(sudokuJson, ".\\data\\sudoku.json");
 }
 
 void loadSudokuBoardFromJson() {
-  JSONObject sudokuJson = loadJSONObject("./data/sudoku.json");
+  JSONObject sudokuJson = loadJSONObject(".\\data\\sudoku.json");
   
   levelDropdown.setCurrentOption(sudokuJson.getInt("Difficulty"));
   

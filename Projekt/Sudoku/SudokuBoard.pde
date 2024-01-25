@@ -19,13 +19,13 @@ public enum SUDOKU_LEVEL {
 
 public class SudokuBoard extends GameObject {
  
- private float cellSizeX = 30f;
- private float cellSizeY = 30f;
+ private float cellSizeX = 30f * displayDensity;
+ private float cellSizeY = 30f * displayDensity;
  private int[][] _cells;
  
- private ArrayList<Button> cellButtons = new ArrayList<Button>();
- 
  private int choosed = 0;
+ 
+ private ArrayList<Button> cellButtons = new ArrayList<Button>();
  
  SudokuBoard() {
    super(0, 0);
@@ -35,6 +35,7 @@ public class SudokuBoard extends GameObject {
     }
  }
  
+ @Override
  public void draw(PGraphics drawTarget) {
    drawTarget.pushMatrix();
    drawTarget.pushStyle();
@@ -49,14 +50,14 @@ public class SudokuBoard extends GameObject {
    
    // draw Lines
    for (int i = 0; i <= 9; i++) {
-     if (i % 3 == 0) drawTarget.strokeWeight(4);
-     else drawTarget.strokeWeight(2);
+     if (i % 3 == 0) drawTarget.strokeWeight(4 * displayDensity);
+     else drawTarget.strokeWeight(2 * displayDensity);
      drawTarget.line(startX + i * cellSizeX, startY, startX + i * cellSizeX, startY + 9 * cellSizeY);
      drawTarget.line(startX, startY + i * cellSizeY, startX + 9 * cellSizeX, startY + i * cellSizeY);
    }
    
    // draw Numbers
-   drawTarget.textSize(24);
+   drawTarget.textSize(24 * displayDensity);
    float textHeight = (drawTarget.textAscent() + drawTarget.textDescent()) * 0.75f;
    for (int x = 0; x < 9; x++) {
     for (int y = 0; y < 9; y++) {
@@ -211,9 +212,10 @@ public class SudokuBoard extends GameObject {
      float buttonPosY = startY + y * cellSizeY + cellSizeY / 2f;
      Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
      button.setColor(color(30));
-     button.addAction(() -> {
-       if (mouseButton == LEFT) {
-         _cells[x][y] = this.choosed;
+     button.addAction(new ButtonAction() {
+       @Override
+       public void Invoke() {
+         _cells[x][y] = choosed;
        }
      });
      cellButtons.add(button);
@@ -224,9 +226,17 @@ public class SudokuBoard extends GameObject {
    this.choosed = choosed;
  }
  
- public void mouseClicked() {
+ @Override
+ public void touchStarted() {
    for (int i = 0; i < cellButtons.size(); i++) {
-    cellButtons.get(i).mouseClicked(); 
+    cellButtons.get(i).touchStarted(); 
+   }
+ }
+ 
+ @Override
+ public void touchEnded() {
+   for (int i = 0; i < cellButtons.size(); i++) {
+    cellButtons.get(i).touchEnded(); 
    }
  }
  
@@ -317,8 +327,11 @@ public class SudokuBoard extends GameObject {
      float buttonPosY = startY + y * cellSizeY + cellSizeY / 2f;
      Button button = new Button(buttonPosX, buttonPosY, cellSizeX, cellSizeY);
      button.setColor(color(30));
-     button.addAction(() -> {
-       _cells[x][y] = this.choosed;
+     button.addAction(new ButtonAction() {
+       @Override
+       public void Invoke() {
+           _cells[x][y] = choosed;
+       }
      });
      cellButtons.add(button);
    }
