@@ -194,9 +194,8 @@ void mouseClicked() {
     exitButton.mouseClicked(); 
   }
   else if (currentScreen == SCREEN_TYPES.GAME) {
-    startButton.mouseClicked();
-    loadButton.mouseClicked();
-    exitButton.mouseClicked();
+    saveButton.mouseClicked();
+    backButton.mouseClicked();
     
     board.mouseClicked();
     
