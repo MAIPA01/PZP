@@ -1,0 +1,617 @@
+{
+  "Board": {
+    "Bombs": 14,
+    "Columns": 10,
+    "Cells": [
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 3,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 3,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": true,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": true,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 4,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 5,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 3,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 1,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 3,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 2,
+        "IsBomb": false
+      },
+      {
+        "IsFlaged": false,
+        "IsEnabled": false,
+        "Num": 0,
+        "IsBomb": true
+      }
+    ],
+    "Rows": 10
+  },
+  "Bombs": 14,
+  "Columns": 10,
+  "Time": {
+    "Miliseconds": 570,
+    "Seconds": 8,
+    "Minutes": 0
+  },
+  "Rows": 10
+}
